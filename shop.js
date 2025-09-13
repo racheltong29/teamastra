@@ -54,5 +54,25 @@ function buyItem(name, price) {
   }
 }
 
+// Buy wish ticket function
+function buyWishTicket() {
+  const ticketPrice = 10;
+  
+  if (dataManager.spendStars(ticketPrice)) {
+    // Add wish ticket to localStorage
+    let wishTickets = parseInt(localStorage.getItem('wishTickets')) || 0;
+    wishTickets += 1;
+    localStorage.setItem('wishTickets', wishTickets);
+    
+    // Update star display
+    updateStarDisplay();
+    
+    // Show success message
+    showNotification(`You bought a Wish Ticket! You now have ${wishTickets} tickets.`, 'success');
+  } else {
+    showNotification("Not enough stars! You need 10 stars to buy a ticket.", 'error');
+  }
+}
+
 
 // toggleSidebar function moved to shared-scripts.js
