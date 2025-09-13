@@ -148,3 +148,49 @@ td select, td input {
   from { transform: scale(0.8); opacity: 0; }
   to { transform: scale(1); opacity: 1; }
 }
+
+/* Hamburger Icon */
+#menu-icon {
+  position: fixed;
+  top: 20px;
+  left: 20px;
+  cursor: pointer;
+  z-index: 1001;
+}
+
+.bar {
+  width: 30px;
+  height: 4px;
+  background-color: #a3b18a; /* pastel green */
+  margin: 6px 0;
+  border-radius: 2px;
+}
+
+/* Sidebar */
+#sidebar {
+  position: fixed;
+  top: 0;
+  left: -200px;
+  width: 200px;
+  height: 100%;
+  background-color: #fef6e4; /* pastel cream */
+  box-shadow: 2px 0 5px rgba(0,0,0,0.1);
+  padding-top: 60px;
+  transition: left 0.3s ease;
+  z-index: 1000;
+  display: flex;
+  flex-direction: column;
+}
+
+#sidebar a {
+  padding: 15px 20px;
+  text-decoration: none;
+  color: #5f7161; /* muted pastel text */
+  font-family: 'Segoe UI', sans-serif;
+  font-size: 16px;
+  transition: background 0.2s;
+}
+
+#sidebar a:hover {
+  background-color: #d0f0c0; /* pastel green hover */
+}
