@@ -6,13 +6,13 @@ const resultText = document.getElementById('resultText');
 const resultImage = document.getElementById('resultImage');
 const okayBtn = document.getElementById('okayBtn');
 
-const cats = ['cat.png', 'cat2.png'];
+const cats = ['cats/cat1.png', 'cats/cat2.png', 'cats/cat3.png', 'cats/cat4.png', 'cats/cat5.png', 'cats/cat6.png','cats/ghostCat.gif'];
+const catsNames = ['obedient cat', 'sleepy cat', 'angry cat', 'stupid cat', 'big back cat', 'shhhh kitty', 'ghosty kity'];
 
-if (localStorage.getItem('cat') === null) {
-  localStorage.setItem('cat',0);
-}
-if (localStorage.getItem('cat2') === null) {
-  localStorage.setItem('cat2',0);
+for(let i = 0; i < cats.length; i++){
+  if (localStorage.getItem(cats[i]) === null) {
+    localStorage.setItem(cats[i],0);
+  }
 }
 
 
@@ -24,8 +24,8 @@ let wishTickets = localStorage.getItem('wishTickets');
 const ticketDisplay = document.getElementById('ticketCount');
 ticketDisplay.textContent = `🎟️ Tickets: ${wishTickets}`;
 
-const starDisplay = document.getElementById('stars');
-starDisplay.textContent = localStorage.getItem('stars') || 0;
+//const starDisplay = document.getElementById('stars');
+//starDisplay.textContent = localStorage.getItem('stars') || 0;
 //localStorage.setItem('wishTickets', wishTickets);
 
 wishBtn.addEventListener('click', () => {
@@ -40,14 +40,11 @@ wishBtn.addEventListener('click', () => {
   egg.src = 'egg_cracked.png';
 
   setTimeout(() => {
-    const chosenCat = cats[Math.floor(Math.random() * cats.length)];
-    resultText.textContent = `🎉 You got ${chosenCat === 'cat.png' ? 'Cat 1' : 'Cat 2'}!`;
-    if(chosenCat==='cat.png'){
-      localStorage.setItem('cat',parseInt(localStorage.getItem('cat'))+1);
-    }
-    else{
-      localStorage.setItem('cat2',parseInt(localStorage.getItem('cat2'))+1);
-    }
+    const chosenCatIdx = Math.floor(Math.random() * cats.length);
+    const chosenCat = cats[chosenCatIdx];
+    resultText.textContent = `🎉 You got ${catsNames[chosenCatIdx]}!`;
+    localStorage.setItem(chosenCat,parseInt(localStorage.getItem(chosenCat))+1);
+    
     resultImage.src = chosenCat;
     celebration.style.display = 'flex';
 
