@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JobQuest - Gamified Job Application</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <div class="app">
+        <!-- Header -->
+        <header class="header">
+            <div class="header-content">
+                <div class="logo">
+                    <i class="fas fa-rocket"></i>
+                    <h1>JobQuest</h1>
+                </div>
+                <div class="user-stats">
+                    <div class="stat-item">
+                        <i class="fas fa-star"></i>
+                        <span id="stars">0</span>
+                    </div>
+                    <div class="stat-item">
+                        <i class="fas fa-trophy"></i>
+                        <span id="level">1</span>
+                    </div>
+                    <div class="stat-item">
+                        <i class="fas fa-fire"></i>
+                        <span id="xp">0</span>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Welcome Section -->
+            <section class="welcome-section">
+                <div class="welcome-card">
+                    <h2>Welcome back, <span id="username">Job Hunter</span>! 🎉</h2>
+                    <p>Ready to level up your career? Let's make job hunting fun!</p>
+                </div>
+            </section>
+
+            <!-- Progress Section -->
+            <section class="progress-section">
+                <div class="progress-card">
+                    <h3><i class="fas fa-chart-line"></i> Your Progress</h3>
+                    <div class="xp-bar-container">
+                        <div class="xp-bar">
+                            <div class="xp-fill" id="xpFill"></div>
+                        </div>
+                        <div class="xp-text">
+                            <span id="currentXp">0</span> / <span id="nextLevelXp">100</span> XP
+                        </div>
+                    </div>
+                    <div class="level-info">
+                        <span class="current-level">Level <span id="currentLevel">1</span></span>
+                        <span class="next-level">Next: Level <span id="nextLevel">2</span></span>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Quick Actions -->
+            <section class="actions-section">
+                <h3><i class="fas fa-bolt"></i> Quick Actions</h3>
+                <div class="action-grid">
+                    <button class="action-btn" id="applyJob">
+                        <i class="fas fa-paper-plane"></i>
+                        <span>Apply to Job</span>
+                        <div class="reward">+50 XP, +10 ⭐</div>
+                    </button>
+                    <button class="action-btn" id="coffeeChat">
+                        <i class="fas fa-coffee"></i>
+                        <span>Coffee Chat</span>
+                        <div class="reward">+30 XP, +5 ⭐</div>
+                    </button>
+                    <button class="action-btn" id="updateResume">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Update Resume</span>
+                        <div class="reward">+25 XP, +5 ⭐</div>
+                    </button>
+                    <button class="action-btn" id="networkEvent">
+                        <i class="fas fa-users"></i>
+                        <span>Network Event</span>
+                        <div class="reward">+40 XP, +8 ⭐</div>
+                    </button>
+                </div>
+            </section>
+
+            <!-- Achievements -->
+            <section class="achievements-section">
+                <h3><i class="fas fa-medal"></i> Achievements</h3>
+                <div class="achievements-grid" id="achievementsGrid">
+                    <!-- Achievements will be populated by JavaScript -->
+                </div>
+            </section>
+
+            <!-- Recent Activity -->
+            <section class="activity-section">
+                <h3><i class="fas fa-history"></i> Recent Activity</h3>
+                <div class="activity-feed" id="activityFeed">
+                    <div class="activity-item">
+                        <i class="fas fa-star"></i>
+                        <span>Welcome to JobQuest! Start your journey by applying to your first job.</span>
+                        <span class="time">Just now</span>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <!-- Level Up Modal -->
+        <div class="modal" id="levelUpModal">
+            <div class="modal-content">
+                <div class="celebration">
+                    <i class="fas fa-trophy"></i>
+                    <h2>Level Up! 🎉</h2>
+                    <p>You've reached Level <span id="newLevel">2</span>!</p>
+                    <div class="rewards">
+                        <div class="reward-item">
+                            <i class="fas fa-star"></i>
+                            <span>+50 Stars</span>
+                        </div>
+                        <div class="reward-item">
+                            <i class="fas fa-fire"></i>
+                            <span>+100 XP</span>
+                        </div>
+                    </div>
+                    <button class="close-modal" id="closeModal">Awesome!</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Achievement Unlocked Modal -->
+        <div class="modal" id="achievementModal">
+            <div class="modal-content">
+                <div class="achievement-unlocked">
+                    <i class="fas fa-medal"></i>
+                    <h2>Achievement Unlocked! 🏆</h2>
+                    <p id="achievementTitle">First Application</p>
+                    <p id="achievementDesc">You applied to your first job!</p>
+                    <div class="achievement-reward">
+                        <i class="fas fa-star"></i>
+                        <span id="achievementStars">+25 Stars</span>
+                    </div>
+                    <button class="close-modal" id="closeAchievementModal">Nice!</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
