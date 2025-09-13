@@ -1,8 +1,12 @@
+if(localStorage.getItem('stars')===null){
+    localStorage.setItem('stars',0);
+}
+
 // Game State
 let gameState = {
     level: 1,
     xp: 0,
-    stars: 0,
+    stars: parseInt(localStorage.getItem('stars')),
     jobsApplied: 0,
     coffeeChats: 0,
     resumesUpdated: 0,
@@ -109,7 +113,8 @@ function saveGameState() {
 
 // Update UI elements
 function updateUI() {
-    document.getElementById('stars').textContent = gameState.stars;
+    //document.getElementById('stars').textContent = gameState.stars;
+    document.getElementById('stars').textContent = localStorage.getItem('stars');
     document.getElementById('level').textContent = gameState.level;
     document.getElementById('xp').textContent = gameState.xp;
     
@@ -152,6 +157,7 @@ function addXP(amount) {
 // Add stars
 function addStars(amount) {
     gameState.stars += amount;
+    localStorage.setItem('stars',parseInt(localStorage.getItem('stars'))+amount);
     updateUI();
     saveGameState();
 }
