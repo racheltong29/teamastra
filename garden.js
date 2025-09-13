@@ -12,11 +12,11 @@ function walkCat() {
   requestAnimationFrame(walkCat);
 }
 
-function spawnCat() {
+function spawnCat(name) {
   const garden = document.getElementById('garden');
   const cat = document.createElement('img');
 
-  cat.src = 'cat.png';
+  cat.src = name;
   cat.alt = 'Cute Cat';
   cat.className = 'walking-cat';
 
@@ -76,5 +76,11 @@ function toggleSidebar() {
   }
 }
 
-walkCat();
-spawnCat();
+for(let i = 0; i < (parseInt(localStorage.getItem('cat'))||0); i++){
+  spawnCat('cat.png');
+}
+for(let i = 0; i < (parseInt(localStorage.getItem('cat2'))||0); i++){
+  spawnCat('cat2.png');
+}
+//walkCat();
+//spawnCat();

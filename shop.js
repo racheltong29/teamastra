@@ -33,6 +33,14 @@ function buyItem(name, price) {
     localStorage.setItem("stars", stars);
     localStorage.setItem("ownedItems", JSON.stringify(ownedItems));
     document.getElementById("star-count").textContent = stars;
+
+    // 🎟️ Add to wishTickets if item is a Ticket
+    if (name === "Ticket") {
+      let wishTickets = parseInt(localStorage.getItem("wishTickets")) || 0;
+      wishTickets += 1;
+      localStorage.setItem("wishTickets", wishTickets);
+    }
+
     alert(`You bought a ${name}!`);
   } else {
     alert("Not enough stars!");
