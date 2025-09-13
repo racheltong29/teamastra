@@ -1,5 +1,5 @@
 let xp = 0;
-let stars = 0;
+let stars = parseInt(localStorage.getItem('stars')) || 0;
 
 // Elements
 const starsEl = document.getElementById("stars");
@@ -27,6 +27,12 @@ if (localStorage.getItem('jobList') === null) {
   };
   localStorage.setItem('jobList', JSON.stringify(jobList));
 }
+
+if(localStorage.getItem('stars') === null){
+  localStorage.setItem('stars',0);
+}
+
+
 
 // Rewards for progressing
 const rewards = {
@@ -135,7 +141,9 @@ addRowBtn.addEventListener("click", () => {
 function addRewards(xpAmount, starAmount) {
   xp += xpAmount;
   stars += starAmount;
-  starsEl.textContent = stars;
+
+  localStorage.setItem('stars', stars); // Save updated stars
+  starsEl.textContent = stars.toString();
   xpEl.textContent = xp + " XP";
 }
 
@@ -148,6 +156,7 @@ catModal.addEventListener("click", (e) => {
 });
 
 window.addEventListener('DOMContentLoaded', () => {
+  starsEl.textContent = stars.toString();
   const jobList = JSON.parse(localStorage.getItem('jobList'));
   for (let i = 0; i < jobList.role.length; i++) {
     if (jobList.hide[i]) continue; // Skip hidden/deleted rows
