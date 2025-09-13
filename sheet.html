@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CatQuest - Application Tracker</title>
+  <link rel="stylesheet" href="spreadsheet.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+  <div class="app">
+    <header class="header">
+      <div class="logo">
+        <i class="fas fa-cat"></i>
+        <h1>CatQuest Tracker</h1>
+      </div>
+      <div class="user-stats">
+        <div class="stat-item">
+          <i class="fas fa-star"></i>
+          <span id="stars">0</span>
+        </div>
+        <div class="stat-item">
+          <i class="fas fa-fire"></i>
+          <span id="xp">0 XP</span>
+        </div>
+      </div>
+    </header>
+
+    <main class="main-content">
+      <section class="tracker-section">
+        <h2><i class="fas fa-paw"></i> Job Application Spreadsheet</h2>
+        <button id="addRowBtn" class="add-btn">
+          <i class="fas fa-plus-circle"></i> Add Job
+        </button>
+
+        <div class="table-container">
+          <table id="jobTable">
+            <thead>
+              <tr>
+                <th>Job Role</th>
+                <th>Company</th>
+                <th>Status</th>
+                <th>Salary</th>
+                <th>Priority</th>
+                <th>⭐ / XP</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody>
+              <!-- Rows added dynamically -->
+            </tbody>
+          </table>
+        </div>
+      </section>
+    </main>
+
+    <!-- Rejection Cat Modal -->
+    <div class="modal" id="catModal">
+      <div class="modal-content">
+        <i class="fas fa-cat cat-icon"></i>
+        <h2>Don’t worry! 🐾</h2>
+        <p>Every rejection is just redirection. Keep going, you’ll land on your paws!</p>
+        <button id="closeCatModal" class="close-modal">Thanks, kitty 💕</button>
+      </div>
+    </div>
+
+  </div>
+  
+  <script src="spreadsheet.js"></script>
+</body>
+</html>
