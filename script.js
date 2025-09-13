@@ -459,12 +459,5 @@ if (window.location.hostname === 'localhost' || window.location.hostname === '12
     document.body.appendChild(resetBtn);
 }
 
-function toggleSidebar() {
-  const sidebar = document.getElementById('sidebar');
-  if (sidebar.style.left === '0px') {
-    sidebar.style.left = '-200px';
-  } else {
-    sidebar.style.left = '0px';
-  }
-}
+// toggleSidebar function moved to shared-scripts.js
 

@@ -1,101 +1,87 @@
-body {
-  margin: 0;
-  font-family: 'Comic Sans MS', cursive;
-  background: linear-gradient(to bottom right, #fceaff, #d0f0ff);
-  color: #555;
-}
-
-header {
-  padding: 1rem;
-  text-align: right;
-  font-size: 1.2rem;
-  background-color: #fff0f5;
-  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-}
-
-.currency {
-  padding: 0.5rem 1rem;
-  background-color: #ffe4fa;
-  border-radius: 20px;
-  display: inline-block;
-}
-
+/* Shop-specific styles */
 .shop-container {
-  display: flex;
-  overflow-x: auto;
-  padding: 2rem;
-  gap: 1rem;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 1.5rem;
+  padding: 1rem 0;
 }
 
 .item-card {
-  min-width: 150px;
-  background-color: #fff;
-  border-radius: 15px;
-  padding: 1rem;
-  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  background: rgba(255, 255, 255, 0.95);
+  border-radius: var(--radius-large);
+  padding: 1.5rem;
+  box-shadow: var(--shadow-soft);
   text-align: center;
+  transition: all 0.3s ease;
+  border: 2px solid rgba(255, 107, 157, 0.2);
+  position: relative;
+  overflow: hidden;
+}
+
+.item-card:hover {
+  transform: translateY(-5px);
+  box-shadow: var(--shadow-strong);
+  border-color: var(--primary-pink);
 }
 
 .item-card img {
-  width: 80px;
-  height: 80px;
+  width: 100px;
+  height: 100px;
   object-fit: contain;
+  margin-bottom: 1rem;
+  transition: transform 0.3s ease;
 }
 
-button {
-  margin-top: 0.5rem;
-  background-color: #ffd1dc;
+.item-card:hover img {
+  transform: scale(1.1);
+}
+
+.item-card h3 {
+  font-family: 'Fredoka One', cursive;
+  color: var(--text-dark);
+  margin-bottom: 0.5rem;
+  font-size: 1.2rem;
+}
+
+.item-card p {
+  color: var(--text-medium);
+  margin-bottom: 1rem;
+  font-size: 0.9rem;
+}
+
+.item-card .price {
+  font-family: 'Fredoka One', cursive;
+  color: var(--primary-pink);
+  font-size: 1.3rem;
+  font-weight: 600;
+  margin-bottom: 1rem;
+}
+
+.buy-btn {
+  background: var(--gradient-candy);
+  color: var(--text-white);
   border: none;
-  padding: 0.5rem 1rem;
-  border-radius: 10px;
+  padding: 0.7rem 1.2rem;
+  border-radius: var(--radius-xl);
+  font-family: 'Fredoka', sans-serif;
+  font-weight: 600;
   cursor: pointer;
+  transition: all 0.3s ease;
+  width: 100%;
+}
+
+.buy-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-medium);
+}
+
+.buy-btn:disabled {
+  background: var(--text-light);
+  cursor: not-allowed;
+  transform: none;
 }
 
 
 
 
-/* Hamburger Icon */
-#menu-icon {
-  position: fixed;
-  top: 20px;
-  left: 20px;
-  cursor: pointer;
-  z-index: 1001;
-}
-
-.bar {
-  width: 30px;
-  height: 4px;
-  background-color: #a3b18a; /* pastel green */
-  margin: 6px 0;
-  border-radius: 2px;
-}
-
-/* Sidebar */
-#sidebar {
-  position: fixed;
-  top: 0;
-  left: -200px;
-  width: 200px;
-  height: 100%;
-  background-color: #fef6e4; /* pastel cream */
-  box-shadow: 2px 0 5px rgba(0,0,0,0.1);
-  padding-top: 60px;
-  transition: left 0.3s ease;
-  z-index: 1000;
-  display: flex;
-  flex-direction: column;
-}
-
-#sidebar a {
-  padding: 15px 20px;
-  text-decoration: none;
-  color: #5f7161; /* muted pastel text */
-  font-family: 'Segoe UI', sans-serif;
-  font-size: 16px;
-  transition: background 0.2s;
-}
-
-#sidebar a:hover {
-  background-color: #d0f0c0; /* pastel green hover */
-}
+/* Shop-specific styles only */

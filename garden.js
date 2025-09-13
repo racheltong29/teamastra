@@ -67,14 +67,7 @@ function spawnCat(name) {
   }, delay);
 }
 
-function toggleSidebar() {
-  const sidebar = document.getElementById('sidebar');
-  if (sidebar.style.left === '0px') {
-    sidebar.style.left = '-200px';
-  } else {
-    sidebar.style.left = '0px';
-  }
-}
+// toggleSidebar function moved to shared-scripts.js
 
 for(let i = 0; i < (parseInt(localStorage.getItem('cat'))||0); i++){
   spawnCat('cat.png');

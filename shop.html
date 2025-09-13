@@ -3,27 +3,51 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Shop</title>
-
+    <title>Cat Shop - TeamAstra</title>
+    <link rel="stylesheet" href="shared-styles.css">
     <link rel="stylesheet" href="shop.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
-    <body>
-
-        <header>
-            <div class="currency">
-                ⭐ Stars: <span id="star-count">100</span>
+<body>
+    <div class="app">
+        <!-- Header -->
+        <header class="header">
+            <div class="header-content">
+                <div class="logo">
+                    <i class="fas fa-shopping-cart"></i>
+                    <h1>Cat Shop</h1>
+                </div>
+                <div class="user-stats">
+                    <div class="stat-item">
+                        <i class="fas fa-star"></i>
+                        <span id="star-count">100</span>
+                    </div>
+                    <div class="stat-item">
+                        <i class="fas fa-trophy"></i>
+                        <span id="level">1</span>
+                    </div>
+                    <div class="stat-item">
+                        <i class="fas fa-fire"></i>
+                        <span id="xp">0</span>
+                    </div>
+                </div>
             </div>
         </header>
 
-        <main>
-            <div class="shop-container" id="shop-container">
-                <!-- Items will be injected here -->
+        <!-- Main Content -->
+        <main class="main-content">
+            <div class="card">
+                <h2><i class="fas fa-store"></i> Cat Food & Treats Shop</h2>
+                <p>Buy delicious food and treats for your adorable cats!</p>
+                <div class="shop-container" id="shop-container">
+                    <!-- Items will be injected here -->
+                </div>
             </div>
         </main>
+    </div>
 
-
-
-        <script src="shop.js"></script>
+    <script src="shared-scripts.js"></script>
+    <script src="shop.js"></script>
 
         <!-- Hamburger Menu -->
         <div id="menu-icon" onclick="toggleSidebar()">
