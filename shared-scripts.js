@@ -2,36 +2,6 @@
 // TEAMASTRA - SHARED JAVASCRIPT FUNCTIONS
 // ========================================
 
-// Theme Toggle Function
-function toggleTheme() {
-  const body = document.body;
-  const themeToggle = document.querySelector('.theme-toggle i');
-  
-  body.classList.toggle('dark-mode');
-  
-  // Update theme toggle icon
-  if (body.classList.contains('dark-mode')) {
-    themeToggle.className = 'fas fa-sun';
-    localStorage.setItem('theme', 'dark');
-  } else {
-    themeToggle.className = 'fas fa-moon';
-    localStorage.setItem('theme', 'light');
-  }
-}
-
-// Load saved theme on page load
-document.addEventListener('DOMContentLoaded', function() {
-  const savedTheme = localStorage.getItem('theme');
-  const themeToggle = document.querySelector('.theme-toggle i');
-  
-  if (savedTheme === 'dark') {
-    document.body.classList.add('dark-mode');
-    if (themeToggle) {
-      themeToggle.className = 'fas fa-sun';
-    }
-  }
-});
-
 // Sidebar Toggle Function
 function toggleSidebar() {
   const sidebar = document.getElementById('sidebar');

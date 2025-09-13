@@ -82,7 +82,6 @@ class DataManager {
 
     // Stars are handled by star-system.js
     syncStars();
-    
     levelElements.forEach(el => el.textContent = stats.level);
     xpElements.forEach(el => {
       if (el.id === 'nextLevelXp') {

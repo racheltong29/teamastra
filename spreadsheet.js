@@ -20,25 +20,9 @@ if (localStorage.getItem('jobList') === null) {
     company: [""],
     status: [""],
     salary: [""],
-    location: [""],
-    dateApplied: [""],
-    returnOffer: [false],
-    connections: [""],
-    emailsContacts: [""],
     priority: [""],
-    resume: [""],
     hide: [""]
   };
-  localStorage.setItem('jobList', JSON.stringify(jobList));
-} else {
-  // Ensure new fields exist for backward compatibility
-  let jobList = JSON.parse(localStorage.getItem('jobList'));
-  if (!jobList.location) jobList.location = [];
-  if (!jobList.dateApplied) jobList.dateApplied = [];
-  if (!jobList.returnOffer) jobList.returnOffer = [];
-  if (!jobList.connections) jobList.connections = [];
-  if (!jobList.emailsContacts) jobList.emailsContacts = [];
-  if (!jobList.resume) jobList.resume = [];
   localStorage.setItem('jobList', JSON.stringify(jobList));
 }
 
@@ -65,25 +49,26 @@ addRowBtn.addEventListener("click", () => {
   jobList.company.push('');
   jobList.status.push('');
   jobList.salary.push('');
-  jobList.location.push('');
-  jobList.dateApplied.push('');
-  jobList.returnOffer.push(false);
-  jobList.connections.push('');
-  jobList.emailsContacts.push('');
   jobList.priority.push('');
-  jobList.resume.push('');
   jobList.hide.push(false);
   row.innerHTML = `
-    <td><input type="text" id=${"role"+jobNum.toString()} placeholder="e.g. Software Engineer" onchange="updateJobList(${jobNum}, 'role', this.value)"></td>
-    <td><input type="text" id=${"company"+jobNum.toString()} placeholder="Company" onchange="updateJobList(${jobNum}, 'company', this.value)"></td>
+    <td><input type="text" id=${"role"+jobNum.toString()} placeholder="e.g. Software Engineer"></td>
+    <td><input type="text" id=${"company"+jobNum.toString()} placeholder="Company"></td>
     <td>
-      <select id=${"status"+jobNum.toString()} onchange="updateJobList(${jobNum}, 'status', this.value)">
+      <select id=${"status"+jobNum.toString()}>
         ${statusOptions.map(s => `<option value="${s}">${s}</option>`).join("")}
       </select>
     </td>
-    <td><input type="text" id=${"salary"+jobNum.toString()} placeholder="Salary" onchange="updateJobList(${jobNum}, 'salary', this.value)"></td>
-    <td><input type="text" id=${"location"+jobNum.toString()} placeholder="Location" onchange="updateJobList(${jobNum}, 'location', this.value)"></td>
-    <td><input type="date" id=${"dateApplied"+jobNum.toString()} onchange="updateJobList(${jobNum}, 'dateApplied', this.value)"></td>
+    <td><input type="number"id=${"salary"+jobNum.toString()} placeholder="Salary"></td>
+    <td>
+      <select id=${"priority"+jobNum.toString()}>
+        <option>High</option>
+        <option>Medium</option>
+        <option>Low</option>
+      </select>
+    </td>
+    <td class="reward-cell">—</td>
+    <td><button class="delete-btn"><i class="fas fa-trash"></i></button></td>
   `;
 
   const roleElement = row.querySelector(`#role${jobNum}`);
@@ -392,12 +377,14 @@ function updateJobList(index, field, value) {
   if (field === 'status' && rewards[value]) {
     const reward = rewards[value];
     xp += reward.xp;
-    addStars(reward.stars); // Use unified star system
+    stars += reward.stars;
     
     // Update display
+    starsEl.textContent = stars;
     xpEl.textContent = xp + ' XP';
     
     // Save to localStorage
+    localStorage.setItem('stars', stars);
     localStorage.setItem('xp', xp);
     
     // Update the reward cell for this row
@@ -408,19 +395,6 @@ function updateJobList(index, field, value) {
         rewardCell.textContent = `${reward.stars} ⭐ / ${reward.xp} XP`;
       }
     }
-  }
-  
-  // Show comfort popup for rejected applications and give XP
-  if (field === 'status' && value === 'Rejected') {
-    // Add XP for learning from rejection
-    xp += 15;
-    localStorage.setItem('xp', xp);
-    xpEl.textContent = xp + ' XP';
-    
-    // Add stars for resilience
-    addStars(3);
-    
-    showComfortPopup();
   }
   
   // Sync with egg page if data manager is available
@@ -571,5 +545,4 @@ function addSampleData() {
 }
 
 // toggleSidebar function moved to shared-scripts.js
-
 
