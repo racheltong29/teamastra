@@ -18,7 +18,6 @@ class DataManager {
   initializeUserStats() {
     if (!localStorage.getItem('userStats')) {
       const defaultStats = {
-        stars: 100,
         level: 1,
         xp: 0,
         nextLevelXp: 100,
@@ -29,15 +28,19 @@ class DataManager {
   }
 
   getUserStats() {
-    return JSON.parse(localStorage.getItem('userStats')) || {};
+    const stats = JSON.parse(localStorage.getItem('userStats')) || {};
+    // Add stars from unified star system
+    stats.stars = getStars();
+    return stats;
   }
 
   updateUserStats(updates) {
     const stats = this.getUserStats();
     const newStats = { ...stats, ...updates };
+    
     localStorage.setItem('userStats', JSON.stringify(newStats));
     this.updateStatsUI();
-    return newStats;
+    return this.getUserStats();
   }
 
   addXP(amount) {
@@ -61,29 +64,24 @@ class DataManager {
   }
 
   addStars(amount) {
-    const stats = this.getUserStats();
-    this.updateUserStats({ stars: stats.stars + amount });
+    addStars(amount);
+    this.updateStatsUI();
   }
 
   spendStars(amount) {
-    const stats = this.getUserStats();
-    if (stats.stars >= amount) {
-      this.updateUserStats({ stars: stats.stars - amount });
-      return true;
-    }
-    return false;
+    return spendStars(amount);
   }
 
   updateStatsUI() {
     const stats = this.getUserStats();
     
     // Update all stat displays across pages
-    const starElements = document.querySelectorAll('#stars, #star-count');
     const levelElements = document.querySelectorAll('#level, #currentLevel');
     const xpElements = document.querySelectorAll('#xp, #currentXp, #nextLevelXp');
     const usernameElements = document.querySelectorAll('#username');
 
-    starElements.forEach(el => el.textContent = localStorage.getItem('stars'));
+    // Stars are handled by star-system.js
+    syncStars();
     levelElements.forEach(el => el.textContent = stats.level);
     xpElements.forEach(el => {
       if (el.id === 'nextLevelXp') {

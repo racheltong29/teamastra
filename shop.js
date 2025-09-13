@@ -19,7 +19,8 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 function updateStarDisplay() {
-  document.getElementById("stars").textContent = localStorage.getItem('stars');
+  // Stars are now handled by star-system.js
+  syncStars();
 }
 
 const shopContainer = document.getElementById("shop-container");
@@ -39,10 +40,9 @@ items.forEach(item => {
 });
 
 function buyItem(name, price) {
-  if (parseInt(localStorage.getItem('stars'))>=price) {
-    // Add to inventory
+  if (spendStars(price)) {
+    // Add to inventory using dataManager
     dataManager.addToInventory(name, 1);
-    localStorage.setItem('stars',parseInt(localStorage.getItem('stars'))-price);
     
     // Update star display
     updateStarDisplay();
@@ -51,6 +51,26 @@ function buyItem(name, price) {
     showNotification(`You bought ${name}! Check your inventory in the garden.`, 'success');
   } else {
     showNotification("Not enough stars!", 'error');
+  }
+}
+
+// Buy wish ticket function
+function buyWishTicket() {
+  const ticketPrice = 10;
+  
+  if (spendStars(ticketPrice)) {
+    // Add wish ticket to localStorage
+    let wishTickets = parseInt(localStorage.getItem('wishTickets')) || 0;
+    wishTickets += 1;
+    localStorage.setItem('wishTickets', wishTickets);
+    
+    // Update star display
+    updateStarDisplay();
+    
+    // Show success message
+    showNotification(`You bought a Wish Ticket! You now have ${wishTickets} tickets.`, 'success');
+  } else {
+    showNotification("Not enough stars! You need 10 stars to buy a ticket.", 'error');
   }
 }
 

@@ -20,22 +20,26 @@ function spawnCat(name) {
   cat.alt = 'Cute Cat';
   cat.className = 'walking-cat';
 
-  // Random vertical position
+  // Random vertical position within garden
   const gardenHeight = garden.offsetHeight;
-  const randomBottom = Math.floor(Math.random() * (gardenHeight - 100));
+  const gardenWidth = garden.offsetWidth;
+  const randomBottom = Math.floor(Math.random() * (gardenHeight - 120)) + 20; // Keep cats within bounds
 
   // Initial styles
   cat.style.position = 'absolute';
   cat.style.left = '0px';
   cat.style.bottom = `${randomBottom}px`;
   cat.style.width = '100px';
+  cat.style.height = 'auto';
   cat.style.transition = 'transform 0.5s';
+  cat.style.zIndex = '10'; // Ensure cats appear on top of background
+  cat.style.filter = 'drop-shadow(0 4px 8px rgba(0, 0, 0, 0.3))'; // Add shadow for better visibility
 
   garden.appendChild(cat);
 
   // Random speed and direction
   let direction = Math.random() < 0.5 ? -1 : 1;
-  let position = Math.floor(Math.random() * window.innerWidth);
+  let position = Math.floor(Math.random() * (gardenWidth - 100));
   let speed = Math.random() * 1.5 + 0.5; // Between 0.5 and 2.0 pixels per frame
 
   cat.style.left = position + 'px';
@@ -47,7 +51,7 @@ function spawnCat(name) {
   setTimeout(() => {
     function animateCat() {
       position += direction * speed;
-        const maxRight = window.innerWidth - 100;
+        const maxRight = gardenWidth - 100;
         const minLeft = 0;
 
         if (position >= maxRight) {
