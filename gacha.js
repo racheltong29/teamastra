@@ -23,6 +23,9 @@ let wishTickets = localStorage.getItem('wishTickets');
 
 const ticketDisplay = document.getElementById('ticketCount');
 ticketDisplay.textContent = `🎟️ Tickets: ${wishTickets}`;
+
+const starDisplay = document.getElementById('stars');
+starDisplay.textContent = localStorage.getItem('stars') || 0;
 //localStorage.setItem('wishTickets', wishTickets);
 
 wishBtn.addEventListener('click', () => {
