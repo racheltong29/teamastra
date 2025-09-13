@@ -2,7 +2,7 @@
 
 A fun and retro-styled collection of web applications designed to make job hunting more engaging and enjoyable!
 
-## 🎨 Features
+## Features
 
 - **Unified Retro Theme**: Consistent color scheme and typography across all pages
 - **Responsive Design**: Works on desktop and mobile devices
@@ -10,7 +10,7 @@ A fun and retro-styled collection of web applications designed to make job hunti
 - **Cat-Themed Interface**: Adorable cat imagery and animations throughout
 - **Gamification Elements**: Stars, XP, levels, and achievements
 
-## 📱 Applications
+## Applications
 
 ### 1. **Stats Dashboard** (`index.html`)
 - Main dashboard with user progress tracking
@@ -43,7 +43,7 @@ A fun and retro-styled collection of web applications designed to make job hunti
 - Add, edit, and delete entries
 - Progress monitoring
 
-## 🎯 Design System
+## Design System
 
 ### Color Palette
 - **Primary Pink**: `#ff6b9d`
@@ -64,13 +64,13 @@ A fun and retro-styled collection of web applications designed to make job hunti
 - Responsive grid layouts
 - Consistent spacing and sizing
 
-## 🚀 Getting Started
+## Getting Started
 
 1. Open `index.html` in your web browser
 2. Use the hamburger menu (☰) to navigate between applications
 3. Explore each application and enjoy the cat-themed experience!
 
-## 📁 File Structure
+## File Structure
 
 ```
 teamastra/
@@ -98,7 +98,7 @@ teamastra/
 └── shop_items/             # Shop item images
 ```
 
-## 🎨 Customization
+## Customization
 
 The design system uses CSS custom properties (variables) defined in `shared-styles.css`. You can easily customize:
 
@@ -107,7 +107,7 @@ The design system uses CSS custom properties (variables) defined in `shared-styl
 - Spacing and sizing using the defined variables
 - Animations and transitions
 
-## 📱 Responsive Design
+## Responsive Design
 
 All pages are fully responsive and will adapt to different screen sizes:
 - Desktop: Full sidebar and grid layouts
