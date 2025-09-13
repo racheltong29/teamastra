@@ -171,3 +171,6 @@ style.textContent = `
   }
 `;
 document.head.appendChild(style);
+
+const starDisplay = document.getElementById('stars');
+starDisplay.textContent = localStorage.getItem('stars') || 0;
