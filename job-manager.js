@@ -3,7 +3,6 @@
 // ========================================
 
 // Job Application Data Structure
-let jobApplications = JSON.parse(localStorage.getItem('jobApplications')) || [];
 let currentJobId = null;
 let isEditMode = false;
 
@@ -12,6 +11,56 @@ document.addEventListener('DOMContentLoaded', function() {
   initializeJobCircles();
   loadJobApplications();
 });
+
+// Handle clicks on empty space in egg container
+function handleEggClick(event) {
+  // Only handle clicks on the container itself, not on circles
+  if (event.target.classList.contains('job-circles-container')) {
+    // Create a new job ID
+    const jobList = JSON.parse(localStorage.getItem('jobList')) || { role: [], company: [], status: [], salary: [], location: [], dateApplied: [], returnOffer: [], connections: [], emailsContacts: [], priority: [], resume: [], hide: [] };
+    const newJobId = `job-${jobList.role.length}`;
+    
+    // Add empty entry to jobList
+    jobList.role.push('');
+    jobList.company.push('');
+    jobList.status.push('Applied');
+    jobList.salary.push('');
+    jobList.location.push('');
+    jobList.dateApplied.push('');
+    jobList.returnOffer.push(false);
+    jobList.connections.push('');
+    jobList.emailsContacts.push('');
+    jobList.priority.push('Medium');
+    jobList.resume.push('');
+    jobList.hide.push('false');
+    
+    localStorage.setItem('jobList', JSON.stringify(jobList));
+    
+    // Create new circle
+    createNewCircle(newJobId);
+    
+    // Open modal for new job
+    openJobModal(newJobId);
+  }
+}
+
+// Create a new circle dynamically
+function createNewCircle(jobId) {
+  const container = document.querySelector('.job-circles-container');
+  const circle = document.createElement('div');
+  circle.className = 'circle';
+  circle.dataset.jobId = jobId;
+  circle.dataset.info = 'Click to add a new job application';
+  circle.textContent = '+';
+  
+  // Add click handler
+  circle.addEventListener('click', function(e) {
+    e.stopPropagation();
+    openJobModal(jobId);
+  });
+  
+  container.appendChild(circle);
+}
 
 // Initialize job circles with click handlers
 function initializeJobCircles() {
@@ -30,6 +79,7 @@ function initializeJobCircles() {
 function openJobModal(jobId) {
   currentJobId = jobId;
   const modal = document.getElementById('jobModal');
+  const jobApplications = dataManager.getJobApplications();
   const jobData = jobApplications.find(job => job.id === jobId);
   
   if (jobData) {
@@ -65,6 +115,11 @@ function loadJobData(jobData) {
   document.getElementById('jobStatus').value = jobData.status || 'Applied';
   document.getElementById('jobDescription').value = jobData.jobDescription || '';
   document.getElementById('coverLetter').value = jobData.coverLetter || '';
+  document.getElementById('location').value = jobData.location || '';
+  document.getElementById('connections').value = jobData.connections || '';
+  document.getElementById('dateApplied').value = jobData.dateApplied || '';
+  document.getElementById('emailsContacts').value = jobData.emailsContacts || '';
+  document.getElementById('returnOffer').checked = jobData.returnOffer || false;
   document.getElementById('notes').value = jobData.notes || '';
   
   // Handle resume file
@@ -81,6 +136,11 @@ function clearJobForm() {
   document.getElementById('jobStatus').value = 'Applied';
   document.getElementById('jobDescription').value = '';
   document.getElementById('coverLetter').value = '';
+  document.getElementById('location').value = '';
+  document.getElementById('connections').value = '';
+  document.getElementById('dateApplied').value = '';
+  document.getElementById('emailsContacts').value = '';
+  document.getElementById('returnOffer').checked = false;
   document.getElementById('notes').value = '';
   document.getElementById('resumeStatus').textContent = '';
 }
@@ -133,6 +193,11 @@ function saveJobApplication() {
     status: document.getElementById('jobStatus').value,
     jobDescription: document.getElementById('jobDescription').value,
     coverLetter: document.getElementById('coverLetter').value,
+    location: document.getElementById('location').value,
+    connections: document.getElementById('connections').value,
+    dateApplied: document.getElementById('dateApplied').value,
+    emailsContacts: document.getElementById('emailsContacts').value,
+    returnOffer: document.getElementById('returnOffer').checked,
     notes: document.getElementById('notes').value,
     resumeFile: document.getElementById('resumeStatus').textContent.replace('Resume: ', '') || null,
     lastUpdated: new Date().toISOString()
@@ -140,20 +205,12 @@ function saveJobApplication() {
   
   // Validate required fields
   if (!jobData.company || !jobData.position) {
-    alert('Please fill in at least Company Name and Job Position');
+    showNotification('Please fill in at least Company Name and Job Position', 'error');
     return;
   }
   
-  // Update or add job application
-  const existingIndex = jobApplications.findIndex(job => job.id === currentJobId);
-  if (existingIndex >= 0) {
-    jobApplications[existingIndex] = jobData;
-  } else {
-    jobApplications.push(jobData);
-  }
-  
-  // Save to localStorage
-  localStorage.setItem('jobApplications', JSON.stringify(jobApplications));
+  // Save using data manager
+  dataManager.saveJobApplication(jobData);
   
   // Update circle display
   updateCircleDisplay(currentJobId, jobData);
@@ -163,16 +220,12 @@ function saveJobApplication() {
   updateEditModeUI();
   
   // Show success message
-  showNotification('Job application saved successfully!', 'success');
-  
-  // Sync with spreadsheet if on spreadsheet page
-  if (typeof updateSpreadsheetFromJobs === 'function') {
-    updateSpreadsheetFromJobs();
-  }
+  showNotification('Job saved successfully!', 'success');
 }
 
 // Apply to job
 function applyToJob() {
+  const jobApplications = dataManager.getJobApplications();
   const jobData = jobApplications.find(job => job.id === currentJobId);
   if (!jobData) return;
   
@@ -180,30 +233,22 @@ function applyToJob() {
   jobData.status = 'Applied';
   jobData.lastUpdated = new Date().toISOString();
   
-  // Save changes
-  localStorage.setItem('jobApplications', JSON.stringify(jobApplications));
+  // Save changes using data manager
+  dataManager.saveJobApplication(jobData);
   
   // Update form
   document.getElementById('jobStatus').value = 'Applied';
   
   // Show success message
   showNotification(`Application submitted for ${jobData.position} at ${jobData.company}!`, 'success');
-  
-  // Sync with spreadsheet
-  if (typeof updateSpreadsheetFromJobs === 'function') {
-    updateSpreadsheetFromJobs();
-  }
 }
 
 // Delete job application
 function deleteJobApplication() {
   if (!confirm('Are you sure you want to delete this job application?')) return;
   
-  // Remove from array
-  jobApplications = jobApplications.filter(job => job.id !== currentJobId);
-  
-  // Save to localStorage
-  localStorage.setItem('jobApplications', JSON.stringify(jobApplications));
+  // Delete using data manager
+  dataManager.deleteJobApplication(currentJobId);
   
   // Update circle display
   updateCircleDisplay(currentJobId, null);
@@ -213,11 +258,6 @@ function deleteJobApplication() {
   
   // Show success message
   showNotification('Job application deleted successfully!', 'success');
-  
-  // Sync with spreadsheet
-  if (typeof updateSpreadsheetFromJobs === 'function') {
-    updateSpreadsheetFromJobs();
-  }
 }
 
 // Update circle display based on job data
@@ -226,9 +266,10 @@ function updateCircleDisplay(jobId, jobData) {
   if (!circle) return;
   
   if (jobData) {
-    // Show company initial or job status
-    const displayText = jobData.company ? jobData.company.charAt(0).toUpperCase() : '+';
-    circle.textContent = displayText;
+    // Show company name (truncated if too long)
+    const companyName = jobData.company || '';
+    const displayText = companyName.length > 8 ? companyName.substring(0, 8) + '...' : companyName;
+    circle.textContent = displayText || '+';
     circle.dataset.info = `${jobData.company} - ${jobData.position}`;
     
     // Add status-based styling
@@ -244,9 +285,37 @@ function updateCircleDisplay(jobId, jobData) {
 
 // Load all job applications and update circles
 function loadJobApplications() {
-  jobApplications.forEach(job => {
-    updateCircleDisplay(job.id, job);
-  });
+  // First try to load from jobList (spreadsheet data)
+  const jobList = JSON.parse(localStorage.getItem('jobList'));
+  if (jobList && jobList.role && jobList.role.length > 0) {
+    // Convert jobList to job applications format
+    for (let i = 0; i < jobList.role.length; i++) {
+      if (jobList.hide[i] === 'true' || jobList.hide[i] === true) continue;
+      
+      const jobData = {
+        id: `job-${i}`,
+        company: jobList.company[i] || '',
+        position: jobList.role[i] || '',
+        salary: jobList.salary[i] || '',
+        status: jobList.status[i] || 'Applied',
+        location: jobList.location[i] || '',
+        dateApplied: jobList.dateApplied[i] || '',
+        returnOffer: jobList.returnOffer[i] || false,
+        connections: jobList.connections[i] || '',
+        emailsContacts: jobList.emailsContacts[i] || '',
+        resumeFile: jobList.resume[i] || '',
+        lastUpdated: new Date().toISOString()
+      };
+      
+      updateCircleDisplay(jobData.id, jobData);
+    }
+  } else {
+    // Fallback to data manager
+    const jobApplications = dataManager.getJobApplications();
+    jobApplications.forEach(job => {
+      updateCircleDisplay(job.id, job);
+    });
+  }
 }
 
 // Handle resume file upload

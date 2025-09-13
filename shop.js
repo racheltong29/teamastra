@@ -13,10 +13,15 @@ const items = [
   { name: "Waffle", price: 18, img: "shop_items/101_waffle.png" }
 ];
 
-let stars = parseInt(localStorage.getItem("stars")) || 100;
-let ownedItems = JSON.parse(localStorage.getItem("ownedItems")) || [];
+// Initialize with data manager
+document.addEventListener('DOMContentLoaded', function() {
+  updateStarDisplay();
+});
 
-document.getElementById("star-count").textContent = stars;
+function updateStarDisplay() {
+  const stats = dataManager.getUserStats();
+  document.getElementById("star-count").textContent = stats.stars;
+}
 
 const shopContainer = document.getElementById("shop-container");
 
@@ -35,23 +40,17 @@ items.forEach(item => {
 });
 
 function buyItem(name, price) {
-  if (stars >= price) {
-    stars -= price;
-    ownedItems.push(name);
-    localStorage.setItem("stars", stars);
-    localStorage.setItem("ownedItems", JSON.stringify(ownedItems));
-    document.getElementById("star-count").textContent = stars;
-
-    // 🎟️ Add to wishTickets if item is a Ticket
-    if (name === "Ticket") {
-      let wishTickets = parseInt(localStorage.getItem("wishTickets")) || 0;
-      wishTickets += 1;
-      localStorage.setItem("wishTickets", wishTickets);
-    }
-
-    alert(`You bought a ${name}!`);
+  if (dataManager.spendStars(price)) {
+    // Add to inventory
+    dataManager.addToInventory(name, 1);
+    
+    // Update star display
+    updateStarDisplay();
+    
+    // Show success message
+    showNotification(`You bought ${name}! Check your inventory in the garden.`, 'success');
   } else {
-    alert("Not enough stars!");
+    showNotification("Not enough stars!", 'error');
   }
 }
 
