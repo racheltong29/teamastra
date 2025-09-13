@@ -90,7 +90,7 @@ const catImages = [
   'cats/Xmas/Idle2Cattt.png'
 ];
 
-const cats = ['cats/cat1.png', 'cats/cat2.png', 'cats/cat3.png', 'cats/cat4.png', 'cats/cat5.png', 'cats/cat6.png','cats/ghostCat.gif'];
+const cats = ['cats/cat1.png', 'cats/cat2.png', 'cats/cat3.png', 'cats/cat4.png', 'cats/cat5.png', 'cats/cat6.png','cats/ghostCat.gif','cats/whiteCat.gif'];
 for(let i = 0; i < cats.length; i++){
   for(let j = 0; j < parseInt(localStorage.getItem(cats[i]))||0; j++){
     spawnCat(cats[i]);
