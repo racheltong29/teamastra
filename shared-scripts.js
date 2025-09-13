@@ -202,5 +202,4 @@ style.textContent = `
 `;
 document.head.appendChild(style);
 
-const starDisplay = document.getElementById('stars');
-starDisplay.textContent = localStorage.getItem('stars') || 0;
+// Stars display is handled by individual page scripts

@@ -1,8 +1,6 @@
 let xp = 0;
-let stars = parseInt(localStorage.getItem('stars')) || 0;
 
 // Elements
-const starsEl = document.getElementById("stars");
 const xpEl = document.getElementById("xp");
 const tableBody = document.querySelector("#jobTable tbody");
 const addRowBtn = document.getElementById("addRowBtn");
@@ -44,9 +42,7 @@ if (localStorage.getItem('jobList') === null) {
   localStorage.setItem('jobList', JSON.stringify(jobList));
 }
 
-if(localStorage.getItem('stars') === null){
-  localStorage.setItem('stars',0);
-}
+// Stars are now handled by star-system.js
 
 
 
@@ -155,10 +151,8 @@ addRowBtn.addEventListener("click", () => {
 // Rewards
 function addRewards(xpAmount, starAmount) {
   xp += xpAmount;
-  stars += starAmount;
+  addStars(starAmount); // Use unified star system
 
-  localStorage.setItem('stars', stars); // Save updated stars
-  starsEl.textContent = stars.toString();
   xpEl.textContent = xp + " XP";
 }
 
@@ -166,12 +160,66 @@ function addRewards(xpAmount, starAmount) {
 closeCatModal.addEventListener("click", () => {
   catModal.classList.remove("show");
 });
+
+// Comfort popup for rejected applications
+function showComfortPopup() {
+  const catImages = [
+    'cats/cat1.png',
+    'cats/cat2.png',
+    'cats/cat3.png',
+    'cats/cat4.png',
+    'cats/cat5.png',
+    'cats/cat6.png'
+  ];
+  
+  const randomCat = catImages[Math.floor(Math.random() * catImages.length)];
+  
+  const comfortModal = document.createElement('div');
+  comfortModal.className = 'modal show';
+  comfortModal.id = 'comfortModal';
+  comfortModal.innerHTML = `
+    <div class="modal-content comfort-modal">
+      <div class="comfort-content">
+        <img src="${randomCat}" alt="Comfort Cat" class="comfort-cat">
+        <h2>It's Okay! 💕</h2>
+        <p>Rejection is just redirection. This cat believes in you!</p>
+        <p>Keep applying - your perfect opportunity is coming! 🌟</p>
+        <div class="rejection-rewards">
+          <div class="reward-item">
+            <i class="fas fa-fire"></i>
+            <span>+15 XP for resilience!</span>
+          </div>
+          <div class="reward-item">
+            <i class="fas fa-star"></i>
+            <span>+3 Stars for learning!</span>
+          </div>
+        </div>
+        <button class="btn comfort-btn" onclick="closeComfortModal()">Thanks, Cat! 🐱</button>
+      </div>
+    </div>
+  `;
+  
+  document.body.appendChild(comfortModal);
+  
+  // Auto close after 8 seconds
+  setTimeout(() => {
+    closeComfortModal();
+  }, 8000);
+}
+
+function closeComfortModal() {
+  const comfortModal = document.getElementById('comfortModal');
+  if (comfortModal) {
+    comfortModal.remove();
+  }
+}
 catModal.addEventListener("click", (e) => {
   if (e.target.id === "catModal") catModal.classList.remove("show");
 });
 
 window.addEventListener('DOMContentLoaded', () => {
-  starsEl.textContent = stars.toString();
+  // Stars are handled by star-system.js
+  syncStars();
   const jobList = JSON.parse(localStorage.getItem('jobList'));
   for (let i = 0; i < jobList.role.length; i++) {
     if (jobList.hide[i]) continue; // Skip hidden/deleted rows
@@ -344,14 +392,12 @@ function updateJobList(index, field, value) {
   if (field === 'status' && rewards[value]) {
     const reward = rewards[value];
     xp += reward.xp;
-    stars += reward.stars;
+    addStars(reward.stars); // Use unified star system
     
     // Update display
-    starsEl.textContent = stars;
     xpEl.textContent = xp + ' XP';
     
     // Save to localStorage
-    localStorage.setItem('stars', stars);
     localStorage.setItem('xp', xp);
     
     // Update the reward cell for this row
@@ -362,6 +408,19 @@ function updateJobList(index, field, value) {
         rewardCell.textContent = `${reward.stars} ⭐ / ${reward.xp} XP`;
       }
     }
+  }
+  
+  // Show comfort popup for rejected applications and give XP
+  if (field === 'status' && value === 'Rejected') {
+    // Add XP for learning from rejection
+    xp += 15;
+    localStorage.setItem('xp', xp);
+    xpEl.textContent = xp + ' XP';
+    
+    // Add stars for resilience
+    addStars(3);
+    
+    showComfortPopup();
   }
   
   // Sync with egg page if data manager is available

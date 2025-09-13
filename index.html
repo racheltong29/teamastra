@@ -155,10 +155,39 @@
                 </div>
             </div>
         </div>
+
+        <!-- Congratulatory Action Modal -->
+        <div class="modal" id="congratsModal">
+            <div class="modal-content congrats-modal">
+                <div class="congrats-content">
+                    <div class="congrats-icon">
+                        <i class="fas fa-check-circle"></i>
+                    </div>
+                    <h2 id="congratsTitle">Great Job! 🎉</h2>
+                    <p id="congratsMessage">You've made progress on your job search journey!</p>
+                    <div class="congrats-rewards">
+                        <div class="reward-item">
+                            <i class="fas fa-star"></i>
+                            <span id="congratsStars">+10 Stars</span>
+                        </div>
+                        <div class="reward-item">
+                            <i class="fas fa-fire"></i>
+                            <span id="congratsXP">+50 XP</span>
+                        </div>
+                    </div>
+                    <div class="congrats-achievements" id="congratsAchievements" style="display: none;">
+                        <h3>🏆 New Achievement!</h3>
+                        <p id="congratsAchievementText"></p>
+                    </div>
+                    <button class="close-modal congrats-btn" id="closeCongratsModal">Awesome! 🚀</button>
+                </div>
+            </div>
+        </div>
     </div>
 
     <script src="shared-scripts.js"></script>
     <script src="music-system.js"></script>
+    <script src="star-system.js"></script>
     <script src="script.js"></script>
 
         <!-- Hamburger Menu -->

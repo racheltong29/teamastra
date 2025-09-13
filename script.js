@@ -1,12 +1,7 @@
-if(localStorage.getItem('stars')===null){
-    localStorage.setItem('stars',0);
-}
-
 // Game State
 let gameState = {
     level: 1,
     xp: 0,
-    stars: parseInt(localStorage.getItem('stars')),
     jobsApplied: 0,
     coffeeChats: 0,
     resumesUpdated: 0,
@@ -103,6 +98,7 @@ function loadGameState() {
         const savedState = JSON.parse(saved);
         gameState = { ...gameState, ...savedState };
     }
+    
     updateAchievements();
 }
 
@@ -113,10 +109,27 @@ function saveGameState() {
 
 // Update UI elements
 function updateUI() {
-    //document.getElementById('stars').textContent = gameState.stars;
-    document.getElementById('stars').textContent = localStorage.getItem('stars');
-    document.getElementById('level').textContent = gameState.level;
-    document.getElementById('xp').textContent = gameState.xp;
+    // Stars are handled by star-system.js
+    if (typeof syncStars === 'function') {
+        syncStars();
+    } else {
+        // Fallback if star-system.js hasn't loaded yet
+        const starsElement = document.getElementById('stars');
+        if (starsElement) {
+            const currentStars = localStorage.getItem('stars') || 0;
+            starsElement.textContent = currentStars;
+        }
+    }
+    
+    const levelElement = document.getElementById('level');
+    if (levelElement) {
+        levelElement.textContent = gameState.level;
+    }
+    
+    const xpElement = document.getElementById('xp');
+    if (xpElement) {
+        xpElement.textContent = gameState.xp;
+    }
     
     const xpNeeded = getXPNeededForLevel(gameState.level);
     const xpProgress = (gameState.xp % xpNeeded) / xpNeeded * 100;
@@ -154,10 +167,22 @@ function addXP(amount) {
     saveGameState();
 }
 
-// Add stars
+// Add stars - now uses unified star system
 function addStars(amount) {
-    gameState.stars += amount;
-    localStorage.setItem('stars',parseInt(localStorage.getItem('stars'))+amount);
+    if (typeof window.addStars === 'function') {
+        window.addStars(amount);
+    } else {
+        // Fallback if star-system.js hasn't loaded yet
+        const currentStars = parseInt(localStorage.getItem('stars')) || 0;
+        const newStars = currentStars + amount;
+        localStorage.setItem('stars', newStars.toString());
+        
+        // Update display immediately
+        const starsElement = document.getElementById('stars');
+        if (starsElement) {
+            starsElement.textContent = newStars;
+        }
+    }
     updateUI();
     saveGameState();
 }
@@ -194,6 +219,11 @@ function updateAchievements() {
 // Show achievement unlocked modal
 function showAchievementModal(achievement) {
     const modal = document.getElementById('achievementModal');
+    if (!modal) {
+        console.error('Achievement modal not found!');
+        return;
+    }
+    
     document.getElementById('achievementTitle').textContent = achievement.title;
     document.getElementById('achievementDesc').textContent = achievement.description;
     document.getElementById('achievementStars').textContent = `+${achievement.starsReward} Stars`;
@@ -208,6 +238,60 @@ function showAchievementModal(achievement) {
     setTimeout(() => {
         modal.classList.remove('show');
     }, 4000);
+}
+
+// Show congratulatory popup for quick actions
+function showCongratsPopup(action, stars, xp, achievement = null) {
+    const modal = document.getElementById('congratsModal');
+    if (!modal) {
+        console.error('Congrats modal not found!');
+        return;
+    }
+    
+    // Set action-specific messages
+    const messages = {
+        'applyJob': {
+            title: 'Application Sent! 🚀',
+            message: 'Great job applying to a new position! Every application gets you closer to your dream job.'
+        },
+        'coffeeChat': {
+            title: 'Coffee Chat Complete! ☕',
+            message: 'Networking is key! Building relationships opens doors to new opportunities.'
+        },
+        'updateResume': {
+            title: 'Resume Updated! 📄',
+            message: 'Your resume is looking sharp! Keep it current and tailored for each application.'
+        },
+        'networkEvent': {
+            title: 'Networking Event Attended! 🤝',
+            message: 'Great networking! These connections could lead to your next opportunity.'
+        }
+    };
+    
+    const actionData = messages[action] || {
+        title: 'Great Job! 🎉',
+        message: 'You\'ve made progress on your job search journey!'
+    };
+    
+    document.getElementById('congratsTitle').textContent = actionData.title;
+    document.getElementById('congratsMessage').textContent = actionData.message;
+    document.getElementById('congratsStars').textContent = `+${stars} Stars`;
+    document.getElementById('congratsXP').textContent = `+${xp} XP`;
+    
+    // Show achievement if unlocked
+    if (achievement) {
+        document.getElementById('congratsAchievements').style.display = 'block';
+        document.getElementById('congratsAchievementText').textContent = `${achievement.title}: ${achievement.description}`;
+    } else {
+        document.getElementById('congratsAchievements').style.display = 'none';
+    }
+    
+    modal.classList.add('show');
+    
+    // Auto close after 5 seconds
+    setTimeout(() => {
+        modal.classList.remove('show');
+    }, 5000);
 }
 
 // Update achievements UI
@@ -268,47 +352,103 @@ function addActivity(message, icon = 'fas fa-star') {
 // Action button handlers
 function setupEventListeners() {
     document.getElementById('applyJob').addEventListener('click', () => {
+        const oldAchievements = [...gameState.achievements];
         gameState.jobsApplied++;
         addXP(50);
         addStars(10);
         addActivity('Applied to a new job! 🚀', 'fas fa-paper-plane');
         updateAchievements();
+        
+        // Check if new achievement was unlocked
+        const newAchievement = gameState.achievements.length > oldAchievements.length ? 
+            achievementsData.find(a => a.id === gameState.achievements[gameState.achievements.length - 1]) : null;
+        
         updateUI();
         saveGameState();
         animateButton(document.getElementById('applyJob'));
+        
+        // Ensure stars display is updated
+        if (typeof updateStarsDisplay === 'function') {
+            updateStarsDisplay();
+        }
+        
+        // Show congratulatory popup
+        showCongratsPopup('applyJob', 10, 50, newAchievement);
     });
     
     document.getElementById('coffeeChat').addEventListener('click', () => {
+        const oldAchievements = [...gameState.achievements];
         gameState.coffeeChats++;
         addXP(30);
         addStars(5);
         addActivity('Had a great coffee chat! ☕', 'fas fa-coffee');
         updateAchievements();
+        
+        // Check if new achievement was unlocked
+        const newAchievement = gameState.achievements.length > oldAchievements.length ? 
+            achievementsData.find(a => a.id === gameState.achievements[gameState.achievements.length - 1]) : null;
+        
         updateUI();
         saveGameState();
         animateButton(document.getElementById('coffeeChat'));
+        
+        // Ensure stars display is updated
+        if (typeof updateStarsDisplay === 'function') {
+            updateStarsDisplay();
+        }
+        
+        // Show congratulatory popup
+        showCongratsPopup('coffeeChat', 5, 30, newAchievement);
     });
     
     document.getElementById('updateResume').addEventListener('click', () => {
+        const oldAchievements = [...gameState.achievements];
         gameState.resumesUpdated++;
         addXP(25);
         addStars(5);
         addActivity('Updated your resume! 📄', 'fas fa-file-alt');
         updateAchievements();
+        
+        // Check if new achievement was unlocked
+        const newAchievement = gameState.achievements.length > oldAchievements.length ? 
+            achievementsData.find(a => a.id === gameState.achievements[gameState.achievements.length - 1]) : null;
+        
         updateUI();
         saveGameState();
         animateButton(document.getElementById('updateResume'));
+        
+        // Ensure stars display is updated
+        if (typeof updateStarsDisplay === 'function') {
+            updateStarsDisplay();
+        }
+        
+        // Show congratulatory popup
+        showCongratsPopup('updateResume', 5, 25, newAchievement);
     });
     
     document.getElementById('networkEvent').addEventListener('click', () => {
+        const oldAchievements = [...gameState.achievements];
         gameState.networkEvents++;
         addXP(40);
         addStars(8);
         addActivity('Attended a networking event! 🤝', 'fas fa-users');
         updateAchievements();
+        
+        // Check if new achievement was unlocked
+        const newAchievement = gameState.achievements.length > oldAchievements.length ? 
+            achievementsData.find(a => a.id === gameState.achievements[gameState.achievements.length - 1]) : null;
+        
         updateUI();
         saveGameState();
         animateButton(document.getElementById('networkEvent'));
+        
+        // Ensure stars display is updated
+        if (typeof updateStarsDisplay === 'function') {
+            updateStarsDisplay();
+        }
+        
+        // Show congratulatory popup
+        showCongratsPopup('networkEvent', 8, 40, newAchievement);
     });
     
     // Modal close handlers
@@ -318,6 +458,10 @@ function setupEventListeners() {
     
     document.getElementById('closeAchievementModal').addEventListener('click', () => {
         document.getElementById('achievementModal').classList.remove('show');
+    });
+    
+    document.getElementById('closeCongratsModal').addEventListener('click', () => {
+        document.getElementById('congratsModal').classList.remove('show');
     });
     
     // Close modals when clicking outside
