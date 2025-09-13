@@ -91,10 +91,26 @@ const catImages = [
 ];
 
 const cats = ['cats/cat1.png', 'cats/cat2.png', 'cats/cat3.png', 'cats/cat4.png', 'cats/cat5.png', 'cats/cat6.png','cats/ghostCat.gif','cats/whiteCat.gif'];
+let noCats = true;
+
 for(let i = 0; i < cats.length; i++){
   for(let j = 0; j < parseInt(localStorage.getItem(cats[i]))||0; j++){
     spawnCat(cats[i]);
+    noCats = false;
   }
+}
+
+for(let i = 0; i < cats.length; i++){
+  if (localStorage.getItem(cats[i]) === null) {
+    localStorage.setItem(cats[i],0);
+  }
+}
+
+if(noCats){
+  const chosenCatIdx = Math.floor(Math.random() * cats.length);
+  const chosenCat = cats[chosenCatIdx];
+  localStorage.setItem(chosenCat,parseInt(localStorage.getItem(chosenCat))+1);
+  spawnCat(chosenCat);
 }
 
 //walkCat();
