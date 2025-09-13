@@ -8,9 +8,15 @@ const okayBtn = document.getElementById('okayBtn');
 
 const cats = ['cat.png', 'cat2.png'];
 
-let wishTickets = 5; // Starting number of tickets
+
+if (localStorage.getItem('wishTickets') === null) {
+  localStorage.setItem('wishTickets',5);
+}
+let wishTickets = localStorage.getItem('wishTickets');
+
 const ticketDisplay = document.getElementById('ticketCount');
 ticketDisplay.textContent = `🎟️ Tickets: ${wishTickets}`;
+//localStorage.setItem('wishTickets', wishTickets);
 
 wishBtn.addEventListener('click', () => {
   if (wishTickets <= 0) {
@@ -19,6 +25,7 @@ wishBtn.addEventListener('click', () => {
   }
 
   wishTickets--;
+  localStorage.setItem('wishTickets', wishTickets);
   ticketDisplay.textContent = `🎟️ Tickets: ${wishTickets}`;
   egg.src = 'egg_cracked.png';
 
