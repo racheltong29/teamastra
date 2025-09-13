@@ -173,3 +173,40 @@ style.textContent = `
 document.head.appendChild(style);
 
 // Stars display is handled by individual page scripts
+
+// Dark Mode Toggle Function
+function toggleTheme() {
+  const body = document.body;
+  const themeToggle = document.querySelector('.theme-toggle i');
+  
+  // Toggle dark mode class
+  body.classList.toggle('dark-mode');
+  
+  // Update icon
+  if (body.classList.contains('dark-mode')) {
+    themeToggle.className = 'fas fa-sun';
+    localStorage.setItem('darkMode', 'enabled');
+  } else {
+    themeToggle.className = 'fas fa-moon';
+    localStorage.setItem('darkMode', 'disabled');
+  }
+}
+
+// Initialize theme on page load
+document.addEventListener('DOMContentLoaded', function() {
+  const savedTheme = localStorage.getItem('darkMode');
+  const body = document.body;
+  const themeToggle = document.querySelector('.theme-toggle i');
+  
+  if (savedTheme === 'enabled') {
+    body.classList.add('dark-mode');
+    if (themeToggle) {
+      themeToggle.className = 'fas fa-sun';
+    }
+  } else {
+    body.classList.remove('dark-mode');
+    if (themeToggle) {
+      themeToggle.className = 'fas fa-moon';
+    }
+  }
+});
