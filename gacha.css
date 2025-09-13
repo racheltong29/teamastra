@@ -73,6 +73,8 @@
   padding: 1rem 2rem;
   animation: pulse 2s infinite;
   z-index: 10;
+  margin: 0 auto;
+  display: block;
 }
 
 @keyframes pulse {

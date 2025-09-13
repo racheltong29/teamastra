@@ -31,7 +31,8 @@
 .table-container { 
   overflow-x: auto; 
   margin: 2rem auto;
-  max-width: 1200px;
+  width: 95%;
+  max-width: 1400px;
   border-radius: var(--radius-large);
   box-shadow: var(--shadow-medium);
 }
@@ -47,11 +48,12 @@ table {
 }
 
 th, td {
-  padding: 0.6rem;
+  padding: 1rem;
   text-align: center;
   border-bottom: 1px solid rgba(255, 107, 157, 0.1);
   font-family: 'Fredoka', sans-serif;
-  font-size: 0.85rem;
+  font-size: 1rem;
+  min-width: 120px;
 }
 
 th { 
@@ -67,23 +69,18 @@ th:nth-child(3) { background: #45B7D1; } /* Status - Blue */
 th:nth-child(4) { background: #96CEB4; } /* Salary - Green */
 th:nth-child(5) { background: #FFEAA7; color: #2D3436; } /* Location - Yellow */
 th:nth-child(6) { background: #DDA0DD; } /* Date Applied - Purple */
-th:nth-child(7) { background: #98D8C8; } /* Return Offer - Mint */
-th:nth-child(8) { background: #F7DC6F; color: #2D3436; } /* Connections - Light Yellow */
-th:nth-child(9) { background: #BB8FCE; } /* Priority - Lavender */
-th:nth-child(10) { background: #85C1E9; } /* Stars/XP - Light Blue */
-th:nth-child(11) { background: #F8C471; } /* Resume - Orange */
-th:nth-child(12) { background: #F1948A; } /* Actions - Coral */
 
 td select, td input, td textarea {
-  padding: 0.4rem;
+  padding: 0.6rem;
   border: 2px solid rgba(255, 107, 157, 0.3);
   border-radius: var(--radius-medium);
   font-family: 'Fredoka', sans-serif;
   background: rgba(255, 255, 255, 0.9);
   transition: all 0.3s ease;
-  font-size: 0.8rem;
+  font-size: 0.9rem;
   width: 100%;
   box-sizing: border-box;
+  min-height: 40px;
 }
 
 td select:focus, td input:focus, td textarea:focus {

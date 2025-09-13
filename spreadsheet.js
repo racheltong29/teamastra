@@ -88,23 +88,6 @@ addRowBtn.addEventListener("click", () => {
     <td><input type="text" id=${"salary"+jobNum.toString()} placeholder="Salary" onchange="updateJobList(${jobNum}, 'salary', this.value)"></td>
     <td><input type="text" id=${"location"+jobNum.toString()} placeholder="Location" onchange="updateJobList(${jobNum}, 'location', this.value)"></td>
     <td><input type="date" id=${"dateApplied"+jobNum.toString()} onchange="updateJobList(${jobNum}, 'dateApplied', this.value)"></td>
-    <td><input type="checkbox" id=${"returnOffer"+jobNum.toString()} onchange="updateJobList(${jobNum}, 'returnOffer', this.checked)"></td>
-    <td><textarea id=${"connections"+jobNum.toString()} placeholder="Connections" onchange="updateJobList(${jobNum}, 'connections', this.value)"></textarea></td>
-    <td>
-      <select id=${"priority"+jobNum.toString()} onchange="updateJobList(${jobNum}, 'priority', this.value)">
-        <option>High</option>
-        <option>Medium</option>
-        <option>Low</option>
-      </select>
-    </td>
-    <td class="reward-cell">—</td>
-    <td>
-      <input type="file" id="resumeUpload${jobNum}" accept=".pdf" onchange="uploadResume(${jobNum}, this)" style="display: none;">
-      <button onclick="document.getElementById('resumeUpload${jobNum}').click()" class="resume-btn">
-        📎 Upload
-      </button>
-    </td>
-    <td><button class="delete-btn" onclick="deleteRow(${jobNum})">🗑️</button></td>
   `;
 
   const roleElement = row.querySelector(`#role${jobNum}`);
@@ -345,23 +328,6 @@ function loadTableData() {
       <td><input type="text" value="${jobList.salary[i] || ''}" onchange="updateJobList(${i}, 'salary', this.value)"></td>
       <td><input type="text" value="${jobList.location[i] || ''}" onchange="updateJobList(${i}, 'location', this.value)"></td>
       <td><input type="date" value="${jobList.dateApplied[i] || ''}" onchange="updateJobList(${i}, 'dateApplied', this.value)"></td>
-      <td><input type="checkbox" ${jobList.returnOffer[i] ? 'checked' : ''} onchange="updateJobList(${i}, 'returnOffer', this.checked)"></td>
-      <td><textarea value="${jobList.connections[i] || ''}" onchange="updateJobList(${i}, 'connections', this.value)" placeholder="Enter connections...">${jobList.connections[i] || ''}</textarea></td>
-      <td>
-        <select onchange="updateJobList(${i}, 'priority', this.value)">
-          <option value="High" ${jobList.priority[i] === 'High' ? 'selected' : ''}>High</option>
-          <option value="Medium" ${jobList.priority[i] === 'Medium' ? 'selected' : ''}>Medium</option>
-          <option value="Low" ${jobList.priority[i] === 'Low' ? 'selected' : ''}>Low</option>
-        </select>
-      </td>
-      <td class="reward-cell">${getRewardText(jobList.status[i])}</td>
-      <td>
-        <input type="file" id="resumeUpload${i}" accept=".pdf" onchange="uploadResume(${i}, this)" style="display: none;">
-        <button onclick="document.getElementById('resumeUpload${i}').click()" class="resume-btn">
-          ${jobList.resume[i] ? '📄' : '📎'} ${jobList.resume[i] ? jobList.resume[i].split('/').pop() : 'Upload'}
-        </button>
-      </td>
-      <td><button class="delete-btn" onclick="deleteRow(${i})">🗑️</button></td>
     `;
     
     tableBody.appendChild(row);
@@ -472,8 +438,78 @@ function syncJobListToDataManager() {
 
 // Initialize table on page load
 document.addEventListener('DOMContentLoaded', function() {
+  // Ensure jobList has all required fields
+  let jobList = JSON.parse(localStorage.getItem('jobList'));
+  if (!jobList) {
+    jobList = {
+      role: [],
+      company: [],
+      status: [],
+      salary: [],
+      location: [],
+      dateApplied: [],
+      returnOffer: [],
+      connections: [],
+      emailsContacts: [],
+      priority: [],
+      resume: [],
+      hide: []
+    };
+    localStorage.setItem('jobList', JSON.stringify(jobList));
+  }
+  
+  // Ensure all fields exist
+  if (!jobList.location) jobList.location = [];
+  if (!jobList.dateApplied) jobList.dateApplied = [];
+  if (!jobList.returnOffer) jobList.returnOffer = [];
+  if (!jobList.connections) jobList.connections = [];
+  if (!jobList.emailsContacts) jobList.emailsContacts = [];
+  if (!jobList.resume) jobList.resume = [];
+  
+  localStorage.setItem('jobList', JSON.stringify(jobList));
+  
+  // Add sample data if no data exists
+  if (jobList.role.length === 0) {
+    addSampleData();
+  }
+  
   loadTableData();
 });
+
+// Add sample data for demonstration
+function addSampleData() {
+  let jobList = JSON.parse(localStorage.getItem('jobList'));
+  
+  // Add sample job
+  jobList.role.push('Software Engineer');
+  jobList.company.push('Tech Corp');
+  jobList.status.push('Applied');
+  jobList.salary.push('$80,000');
+  jobList.location.push('San Francisco, CA');
+  jobList.dateApplied.push('2024-01-15');
+  jobList.returnOffer.push(false);
+  jobList.connections.push('John Smith - LinkedIn');
+  jobList.emailsContacts.push('hr@techcorp.com');
+  jobList.priority.push('High');
+  jobList.resume.push('');
+  jobList.hide.push('false');
+  
+  // Add another sample job
+  jobList.role.push('Product Manager');
+  jobList.company.push('StartupXYZ');
+  jobList.status.push('Interview');
+  jobList.salary.push('$95,000');
+  jobList.location.push('New York, NY');
+  jobList.dateApplied.push('2024-01-20');
+  jobList.returnOffer.push(false);
+  jobList.connections.push('Sarah Johnson - Referral');
+  jobList.emailsContacts.push('careers@startupxyz.com');
+  jobList.priority.push('Medium');
+  jobList.resume.push('');
+  jobList.hide.push('false');
+  
+  localStorage.setItem('jobList', JSON.stringify(jobList));
+}
 
 // toggleSidebar function moved to shared-scripts.js
 
