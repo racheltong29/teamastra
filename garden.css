@@ -1,0 +1,26 @@
+#garden {
+  position: relative;
+  width: 100%;
+  height: 400px;
+  background: var(--gradient-ocean);
+  border-radius: var(--radius-large);
+  overflow: hidden;
+  margin: 2rem 0;
+  box-shadow: var(--shadow-medium);
+  border: 3px solid var(--primary-pink);
+}
+
+#cat {
+  position: absolute;
+  bottom: 20px;
+  left: 20px;
+  width: 120px;
+  transition: transform 0.5s ease;
+  filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.2));
+}
+
+#cat:hover {
+  transform: scale(1.1);
+}
+
+/* Garden-specific styles only */

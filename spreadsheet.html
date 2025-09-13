@@ -3,19 +3,25 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>CatQuest - Application Tracker</title>
+  <title>CatApply - Job Applications</title>
+  <link rel="stylesheet" href="shared-styles.css">
   <link rel="stylesheet" href="spreadsheet.css">
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
   <div class="app">
     <header class="header">
       <div class="logo">
-        <i class="fas fa-cat"></i>
-        <h1>CatQuest Tracker</h1>
+        <img src="cats/icon.png" alt="CatApply Icon" class="logo-icon">
+        <div>
+          <h1>CatApply</h1>
+          <div class="subtitle">Job Applications</div>
+        </div>
       </div>
       <div class="user-stats">
+        <button class="theme-toggle" onclick="toggleTheme()" title="Toggle Dark/Light Mode">
+          <i class="fas fa-moon"></i>
+        </button>
         <div class="stat-item">
           <i class="fas fa-star"></i>
           <span id="stars">0</span>
@@ -66,7 +72,26 @@
     </div>
 
   </div>
-  
+
+   <!-- Hamburger Menu -->
+  <div id="menu-icon" onclick="toggleSidebar()">
+      <div class="bar"></div>
+      <div class="bar"></div>
+      <div class="bar"></div>
+  </div>
+
+  <!-- Sidebar Navigation -->
+  <div id="sidebar">
+      <a href="index.html">Stats</a>
+      <a href="garden.html">Garden</a>
+      <a href="shop.html">Shop</a>
+      <a href="egg.html">Egg</a>
+      <a href="spreadsheet.html">Job Applications</a>
+      <a href="gacha.html">Gacha</a>
+  </div>
+
+  <script src="shared-scripts.js"></script>
+  <script src="job-manager.js"></script>
   <script src="spreadsheet.js"></script>
 </body>
 </html>

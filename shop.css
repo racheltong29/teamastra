@@ -1,0 +1,87 @@
+/* Shop-specific styles */
+.shop-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 1.5rem;
+  padding: 1rem 0;
+}
+
+.item-card {
+  background: rgba(255, 255, 255, 0.95);
+  border-radius: var(--radius-large);
+  padding: 1.5rem;
+  box-shadow: var(--shadow-soft);
+  text-align: center;
+  transition: all 0.3s ease;
+  border: 2px solid rgba(255, 107, 157, 0.2);
+  position: relative;
+  overflow: hidden;
+}
+
+.item-card:hover {
+  transform: translateY(-5px);
+  box-shadow: var(--shadow-strong);
+  border-color: var(--primary-pink);
+}
+
+.item-card img {
+  width: 100px;
+  height: 100px;
+  object-fit: contain;
+  margin-bottom: 1rem;
+  transition: transform 0.3s ease;
+}
+
+.item-card:hover img {
+  transform: scale(1.1);
+}
+
+.item-card h3 {
+  font-family: 'Fredoka One', cursive;
+  color: var(--text-dark);
+  margin-bottom: 0.5rem;
+  font-size: 1.2rem;
+}
+
+.item-card p {
+  color: var(--text-medium);
+  margin-bottom: 1rem;
+  font-size: 0.9rem;
+}
+
+.item-card .price {
+  font-family: 'Fredoka One', cursive;
+  color: var(--primary-pink);
+  font-size: 1.3rem;
+  font-weight: 600;
+  margin-bottom: 1rem;
+}
+
+.buy-btn {
+  background: var(--gradient-candy);
+  color: var(--text-white);
+  border: none;
+  padding: 0.7rem 1.2rem;
+  border-radius: var(--radius-xl);
+  font-family: 'Fredoka', sans-serif;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  width: 100%;
+}
+
+.buy-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-medium);
+}
+
+.buy-btn:disabled {
+  background: var(--text-light);
+  cursor: not-allowed;
+  transform: none;
+}
+
+
+
+
+/* Shop-specific styles only */

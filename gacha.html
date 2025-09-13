@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Cat Gacha - TeamAstra</title>
+    <link rel="stylesheet" href="shared-styles.css">
+    <link rel="stylesheet" href="gacha.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <div class="app">
+        <!-- Header -->
+        <header class="header">
+            <div class="header-content">
+                <div class="logo">
+                    <img src="cats/icon.png" alt="CatApply Icon" class="logo-icon">
+                    <div>
+                        <h1>CatApply</h1>
+                        <div class="subtitle">Cat Gacha</div>
+                    </div>
+                </div>
+                <div class="user-stats">
+                    <button class="theme-toggle" onclick="toggleTheme()" title="Toggle Dark/Light Mode">
+                        <i class="fas fa-moon"></i>
+                    </button>
+                    <div class="stat-item">
+                        <i class="fas fa-ticket-alt"></i>
+                        <span id="ticketCount">5</span>
+                    </div>
+                    <div class="stat-item">
+                        <i class="fas fa-star"></i>
+                        <span id="stars">0</span>
+                    </div>
+                    <div class="stat-item">
+                        <i class="fas fa-fire"></i>
+                        <span id="xp">0</span>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <div class="card">
+                <h2><i class="fas fa-magic"></i> Cat Gacha Machine</h2>
+                <p>Use your tickets to wish for adorable cats! Each egg might contain a special cat!</p>
+                
+                <div class="container">
+                    <img id="egg" src="egg.png" alt="Egg" />
+                    <img id="cat" src="" alt="Cat" style="display: none;" />
+                    <button id="wishBtn" class="btn btn-primary">Make a Wish! ✨</button>
+                </div>
+
+                <div id="celebration" class="overlay" style="display: none;">
+                    <div class="message-box">
+                        <p id="resultText"></p>
+                        <img id="resultImage" src="" alt="Result" />
+                        <button id="okayBtn" class="btn btn-secondary">Awesome! 🎉</button>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="shared-scripts.js"></script>
+    <script src="gacha.js"></script>
+
+    <!-- Hamburger Menu -->
+    <div id="menu-icon" onclick="toggleSidebar()">
+        <div class="bar"></div>
+        <div class="bar"></div>
+        <div class="bar"></div>
+    </div>
+
+    <!-- Sidebar Navigation -->
+    <div id="sidebar">
+        <a href="index.html">Stats</a>
+        <a href="garden.html">Garden</a>
+        <a href="shop.html">Shop</a>
+        <a href="egg.html">Egg</a>
+        <a href="spreadsheet.html">Job Applications</a>
+        <a href="gacha.html">Gacha</a>
+    </div>
+</body>
+</html>
