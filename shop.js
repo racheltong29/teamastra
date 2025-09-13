@@ -19,8 +19,7 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 function updateStarDisplay() {
-  const stats = dataManager.getUserStats();
-  document.getElementById("star-count").textContent = stats.stars;
+  document.getElementById("stars").textContent = localStorage.getItem('stars');
 }
 
 const shopContainer = document.getElementById("shop-container");
@@ -40,9 +39,10 @@ items.forEach(item => {
 });
 
 function buyItem(name, price) {
-  if (dataManager.spendStars(price)) {
+  if (parseInt(localStorage.getItem('stars'))>=price) {
     // Add to inventory
     dataManager.addToInventory(name, 1);
+    localStorage.setItem('stars',parseInt(localStorage.getItem('stars'))-price);
     
     // Update star display
     updateStarDisplay();

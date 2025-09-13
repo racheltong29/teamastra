@@ -83,7 +83,7 @@ class DataManager {
     const xpElements = document.querySelectorAll('#xp, #currentXp, #nextLevelXp');
     const usernameElements = document.querySelectorAll('#username');
 
-    starElements.forEach(el => el.textContent = stats.stars);
+    starElements.forEach(el => el.textContent = localStorage.getItem('stars'));
     levelElements.forEach(el => el.textContent = stats.level);
     xpElements.forEach(el => {
       if (el.id === 'nextLevelXp') {

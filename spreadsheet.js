@@ -22,25 +22,9 @@ if (localStorage.getItem('jobList') === null) {
     company: [""],
     status: [""],
     salary: [""],
-    location: [""],
-    dateApplied: [""],
-    returnOffer: [false],
-    connections: [""],
-    emailsContacts: [""],
     priority: [""],
-    resume: [""],
     hide: [""]
   };
-  localStorage.setItem('jobList', JSON.stringify(jobList));
-} else {
-  // Ensure new fields exist for backward compatibility
-  let jobList = JSON.parse(localStorage.getItem('jobList'));
-  if (!jobList.location) jobList.location = [];
-  if (!jobList.dateApplied) jobList.dateApplied = [];
-  if (!jobList.returnOffer) jobList.returnOffer = [];
-  if (!jobList.connections) jobList.connections = [];
-  if (!jobList.emailsContacts) jobList.emailsContacts = [];
-  if (!jobList.resume) jobList.resume = [];
   localStorage.setItem('jobList', JSON.stringify(jobList));
 }
 
@@ -69,25 +53,26 @@ addRowBtn.addEventListener("click", () => {
   jobList.company.push('');
   jobList.status.push('');
   jobList.salary.push('');
-  jobList.location.push('');
-  jobList.dateApplied.push('');
-  jobList.returnOffer.push(false);
-  jobList.connections.push('');
-  jobList.emailsContacts.push('');
   jobList.priority.push('');
-  jobList.resume.push('');
   jobList.hide.push(false);
   row.innerHTML = `
-    <td><input type="text" id=${"role"+jobNum.toString()} placeholder="e.g. Software Engineer" onchange="updateJobList(${jobNum}, 'role', this.value)"></td>
-    <td><input type="text" id=${"company"+jobNum.toString()} placeholder="Company" onchange="updateJobList(${jobNum}, 'company', this.value)"></td>
+    <td><input type="text" id=${"role"+jobNum.toString()} placeholder="e.g. Software Engineer"></td>
+    <td><input type="text" id=${"company"+jobNum.toString()} placeholder="Company"></td>
     <td>
-      <select id=${"status"+jobNum.toString()} onchange="updateJobList(${jobNum}, 'status', this.value)">
+      <select id=${"status"+jobNum.toString()}>
         ${statusOptions.map(s => `<option value="${s}">${s}</option>`).join("")}
       </select>
     </td>
-    <td><input type="text" id=${"salary"+jobNum.toString()} placeholder="Salary" onchange="updateJobList(${jobNum}, 'salary', this.value)"></td>
-    <td><input type="text" id=${"location"+jobNum.toString()} placeholder="Location" onchange="updateJobList(${jobNum}, 'location', this.value)"></td>
-    <td><input type="date" id=${"dateApplied"+jobNum.toString()} onchange="updateJobList(${jobNum}, 'dateApplied', this.value)"></td>
+    <td><input type="number"id=${"salary"+jobNum.toString()} placeholder="Salary"></td>
+    <td>
+      <select id=${"priority"+jobNum.toString()}>
+        <option>High</option>
+        <option>Medium</option>
+        <option>Low</option>
+      </select>
+    </td>
+    <td class="reward-cell">—</td>
+    <td><button class="delete-btn"><i class="fas fa-trash"></i></button></td>
   `;
 
   const roleElement = row.querySelector(`#role${jobNum}`);
@@ -259,258 +244,5 @@ window.addEventListener('DOMContentLoaded', () => {
   }
 });
 
-// Sync with job applications from egg page
-function updateSpreadsheetFromJobs() {
-  if (typeof jobManager !== 'undefined') {
-    const jobApplications = jobManager.getJobApplications();
-    
-    // Clear existing data
-    const   jobList = {
-    role: [],
-    company: [],
-    status: [],
-    salary: [],
-    location: [],
-    dateApplied: [],
-    returnOffer: [],
-    connections: [],
-    emailsContacts: [],
-    priority: [],
-    resume: [],
-    hide: []
-  };
-    
-    // Convert job applications to spreadsheet format
-    jobApplications.forEach(job => {
-      jobList.role.push(job.position || '');
-      jobList.company.push(job.company || '');
-      jobList.status.push(job.status || 'Applied');
-      jobList.salary.push(job.salary || '');
-      jobList.location.push(job.location || '');
-      jobList.dateApplied.push(job.dateApplied || '');
-      jobList.returnOffer.push(job.returnOffer || false);
-      jobList.connections.push(job.connections || '');
-      jobList.emailsContacts.push(job.emailsContacts || '');
-      jobList.priority.push('Medium'); // Default priority
-      jobList.resume.push(job.resumeFile || '');
-      jobList.hide.push('false');
-    });
-    
-    // Save to localStorage
-    localStorage.setItem('jobList', JSON.stringify(jobList));
-    
-    // Refresh the table display
-    loadTableData();
-  }
-}
-
-// Load table data from localStorage
-function loadTableData() {
-  const jobList = JSON.parse(localStorage.getItem('jobList'));
-  tableBody.innerHTML = '';
-  
-  for (let i = 0; i < jobList.role.length; i++) {
-    if (jobList.hide[i] === 'true') continue;
-    
-    const row = document.createElement("tr");
-    row.id = 'jobRow' + i.toString();
-    
-    row.innerHTML = `
-      <td><input type="text" value="${jobList.role[i] || ''}" onchange="updateJobList(${i}, 'role', this.value)"></td>
-      <td><input type="text" value="${jobList.company[i] || ''}" onchange="updateJobList(${i}, 'company', this.value)"></td>
-      <td>
-        <select onchange="updateJobList(${i}, 'status', this.value)">
-          ${statusOptions.map(status => 
-            `<option value="${status}" ${jobList.status[i] === status ? 'selected' : ''}>${status}</option>`
-          ).join('')}
-        </select>
-      </td>
-      <td><input type="text" value="${jobList.salary[i] || ''}" onchange="updateJobList(${i}, 'salary', this.value)"></td>
-      <td><input type="text" value="${jobList.location[i] || ''}" onchange="updateJobList(${i}, 'location', this.value)"></td>
-      <td><input type="date" value="${jobList.dateApplied[i] || ''}" onchange="updateJobList(${i}, 'dateApplied', this.value)"></td>
-    `;
-    
-    tableBody.appendChild(row);
-  }
-}
-
-// Update jobList when user changes values
-function updateJobList(index, field, value) {
-  let jobList = JSON.parse(localStorage.getItem('jobList'));
-  jobList[field][index] = value;
-  localStorage.setItem('jobList', JSON.stringify(jobList));
-  
-  // Update rewards if status changed
-  if (field === 'status' && rewards[value]) {
-    const reward = rewards[value];
-    xp += reward.xp;
-    stars += reward.stars;
-    
-    // Update display
-    starsEl.textContent = stars;
-    xpEl.textContent = xp + ' XP';
-    
-    // Save to localStorage
-    localStorage.setItem('stars', stars);
-    localStorage.setItem('xp', xp);
-    
-    // Update the reward cell for this row
-    const row = document.getElementById('jobRow' + index);
-    if (row) {
-      const rewardCell = row.querySelector('.reward-cell');
-      if (rewardCell) {
-        rewardCell.textContent = `${reward.stars} ⭐ / ${reward.xp} XP`;
-      }
-    }
-  }
-  
-  // Sync with egg page if data manager is available
-  if (typeof dataManager !== 'undefined') {
-    syncJobListToDataManager();
-  }
-}
-
-// Upload resume function
-function uploadResume(index, input) {
-  const file = input.files[0];
-  if (file && file.type === 'application/pdf') {
-    // Create a local URL for the file
-    const fileURL = URL.createObjectURL(file);
-    
-    // Update jobList
-    let jobList = JSON.parse(localStorage.getItem('jobList'));
-    jobList.resume[index] = fileURL;
-    localStorage.setItem('jobList', JSON.stringify(jobList));
-    
-    // Update the button display
-    const button = input.nextElementSibling;
-    button.innerHTML = `📄 ${file.name}`;
-    
-    // Sync with data manager
-    if (typeof dataManager !== 'undefined') {
-      syncJobListToDataManager();
-    }
-    
-    showNotification('Resume uploaded successfully!', 'success');
-  } else {
-    showNotification('Please select a valid PDF file', 'error');
-  }
-}
-
-// Sync jobList with data manager
-function syncJobListToDataManager() {
-  if (typeof dataManager === 'undefined') return;
-  
-  const jobList = JSON.parse(localStorage.getItem('jobList'));
-  const jobApplications = [];
-  
-  for (let i = 0; i < jobList.role.length; i++) {
-    if (jobList.hide[i] === 'true' || jobList.hide[i] === true) continue;
-    
-    const jobData = {
-      id: `job-${i}`,
-      company: jobList.company[i] || '',
-      position: jobList.role[i] || '',
-      salary: jobList.salary[i] || '',
-      status: jobList.status[i] || 'Applied',
-      location: jobList.location[i] || '',
-      dateApplied: jobList.dateApplied[i] || '',
-      returnOffer: jobList.returnOffer[i] || false,
-      connections: jobList.connections[i] || '',
-      emailsContacts: jobList.emailsContacts[i] || '',
-      resumeFile: jobList.resume[i] || '',
-      lastUpdated: new Date().toISOString()
-    };
-    
-    jobApplications.push(jobData);
-  }
-  
-  // Update data manager
-  localStorage.setItem('jobApplications', JSON.stringify(jobApplications));
-  
-  // Update egg page circles if available
-  if (typeof updateCircleDisplay === 'function') {
-    jobApplications.forEach(job => {
-      updateCircleDisplay(job.id, job);
-    });
-  }
-}
-
-// Initialize table on page load
-document.addEventListener('DOMContentLoaded', function() {
-  // Ensure jobList has all required fields
-  let jobList = JSON.parse(localStorage.getItem('jobList'));
-  if (!jobList) {
-    jobList = {
-      role: [],
-      company: [],
-      status: [],
-      salary: [],
-      location: [],
-      dateApplied: [],
-      returnOffer: [],
-      connections: [],
-      emailsContacts: [],
-      priority: [],
-      resume: [],
-      hide: []
-    };
-    localStorage.setItem('jobList', JSON.stringify(jobList));
-  }
-  
-  // Ensure all fields exist
-  if (!jobList.location) jobList.location = [];
-  if (!jobList.dateApplied) jobList.dateApplied = [];
-  if (!jobList.returnOffer) jobList.returnOffer = [];
-  if (!jobList.connections) jobList.connections = [];
-  if (!jobList.emailsContacts) jobList.emailsContacts = [];
-  if (!jobList.resume) jobList.resume = [];
-  
-  localStorage.setItem('jobList', JSON.stringify(jobList));
-  
-  // Add sample data if no data exists
-  if (jobList.role.length === 0) {
-    addSampleData();
-  }
-  
-  loadTableData();
-});
-
-// Add sample data for demonstration
-function addSampleData() {
-  let jobList = JSON.parse(localStorage.getItem('jobList'));
-  
-  // Add sample job
-  jobList.role.push('Software Engineer');
-  jobList.company.push('Tech Corp');
-  jobList.status.push('Applied');
-  jobList.salary.push('$80,000');
-  jobList.location.push('San Francisco, CA');
-  jobList.dateApplied.push('2024-01-15');
-  jobList.returnOffer.push(false);
-  jobList.connections.push('John Smith - LinkedIn');
-  jobList.emailsContacts.push('hr@techcorp.com');
-  jobList.priority.push('High');
-  jobList.resume.push('');
-  jobList.hide.push('false');
-  
-  // Add another sample job
-  jobList.role.push('Product Manager');
-  jobList.company.push('StartupXYZ');
-  jobList.status.push('Interview');
-  jobList.salary.push('$95,000');
-  jobList.location.push('New York, NY');
-  jobList.dateApplied.push('2024-01-20');
-  jobList.returnOffer.push(false);
-  jobList.connections.push('Sarah Johnson - Referral');
-  jobList.emailsContacts.push('careers@startupxyz.com');
-  jobList.priority.push('Medium');
-  jobList.resume.push('');
-  jobList.hide.push('false');
-  
-  localStorage.setItem('jobList', JSON.stringify(jobList));
-}
-
 // toggleSidebar function moved to shared-scripts.js
-
 
