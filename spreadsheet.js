@@ -244,6 +244,81 @@ window.addEventListener('DOMContentLoaded', () => {
   }
 });
 
+// Sync with job applications from egg page
+function updateSpreadsheetFromJobs() {
+  if (typeof jobManager !== 'undefined') {
+    const jobApplications = jobManager.getJobApplications();
+    
+    // Clear existing data
+    const jobList = {
+      role: [],
+      company: [],
+      status: [],
+      salary: [],
+      priority: [],
+      hide: []
+    };
+    
+    // Convert job applications to spreadsheet format
+    jobApplications.forEach(job => {
+      jobList.role.push(job.position || '');
+      jobList.company.push(job.company || '');
+      jobList.status.push(job.status || 'Applied');
+      jobList.salary.push(job.salary || '');
+      jobList.priority.push('Medium'); // Default priority
+      jobList.hide.push('false');
+    });
+    
+    // Save to localStorage
+    localStorage.setItem('jobList', JSON.stringify(jobList));
+    
+    // Refresh the table display
+    loadTableData();
+  }
+}
+
+// Load table data from localStorage
+function loadTableData() {
+  const jobList = JSON.parse(localStorage.getItem('jobList'));
+  tableBody.innerHTML = '';
+  
+  for (let i = 0; i < jobList.role.length; i++) {
+    if (jobList.hide[i] === 'true') continue;
+    
+    const row = document.createElement("tr");
+    row.id = 'jobRow' + i.toString();
+    
+    row.innerHTML = `
+      <td><input type="text" value="${jobList.role[i] || ''}" onchange="updateJobList(${i}, 'role', this.value)"></td>
+      <td><input type="text" value="${jobList.company[i] || ''}" onchange="updateJobList(${i}, 'company', this.value)"></td>
+      <td>
+        <select onchange="updateJobList(${i}, 'status', this.value)">
+          ${statusOptions.map(status => 
+            `<option value="${status}" ${jobList.status[i] === status ? 'selected' : ''}>${status}</option>`
+          ).join('')}
+        </select>
+      </td>
+      <td><input type="text" value="${jobList.salary[i] || ''}" onchange="updateJobList(${i}, 'salary', this.value)"></td>
+      <td>
+        <select onchange="updateJobList(${i}, 'priority', this.value)">
+          <option value="High" ${jobList.priority[i] === 'High' ? 'selected' : ''}>High</option>
+          <option value="Medium" ${jobList.priority[i] === 'Medium' ? 'selected' : ''}>Medium</option>
+          <option value="Low" ${jobList.priority[i] === 'Low' ? 'selected' : ''}>Low</option>
+        </select>
+      </td>
+      <td class="reward-cell">${getRewardText(jobList.status[i])}</td>
+      <td><button class="delete-btn" onclick="deleteRow(${i})">Delete</button></td>
+    `;
+    
+    tableBody.appendChild(row);
+  }
+}
+
+// Initialize table on page load
+document.addEventListener('DOMContentLoaded', function() {
+  loadTableData();
+});
+
 // toggleSidebar function moved to shared-scripts.js
 
 

@@ -69,11 +69,31 @@ function spawnCat(name) {
 
 // toggleSidebar function moved to shared-scripts.js
 
-for(let i = 0; i < (parseInt(localStorage.getItem('cat'))||0); i++){
-  spawnCat('cat.png');
-}
-for(let i = 0; i < (parseInt(localStorage.getItem('cat2'))||0); i++){
-  spawnCat('cat2.png');
+// Available cat images
+const catImages = [
+  'cats/cat1.png',
+  'cats/cat2.png', 
+  'cats/cat3.png',
+  'cats/cat4.png',
+  'cats/cat5.png',
+  'cats/cat6.png',
+  'cats/Classical/IdleCat.png',
+  'cats/BlackCat/IdleCatb.png',
+  'cats/Brown/IdleCattt.png',
+  'cats/White/IdleCatttt.png',
+  'cats/Siamese/IdleCattt.png',
+  'cats/TigerCatFree/IdleCatt.png',
+  'cats/ThreeColorFree/IdleCatt.png',
+  'cats/BatmanCatFree/IdleCatt.png',
+  'cats/DemonicFree/IdleCatd.png',
+  'cats/EgyptCatFree/IdleCatb.png',
+  'cats/Xmas/Idle2Cattt.png'
+];
+
+// Spawn random cats
+for(let i = 0; i < 5; i++){
+  const randomCat = catImages[Math.floor(Math.random() * catImages.length)];
+  spawnCat(randomCat);
 }
 //walkCat();
 //spawnCat();

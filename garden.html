@@ -14,10 +14,16 @@
         <header class="header">
             <div class="header-content">
                 <div class="logo">
-                    <i class="fas fa-cat"></i>
-                    <h1>Cat Garden</h1>
+                    <img src="cats/icon.png" alt="CatApply Icon" class="logo-icon">
+                    <div>
+                        <h1>CatApply</h1>
+                        <div class="subtitle">Cat Garden</div>
+                    </div>
                 </div>
                 <div class="user-stats">
+                    <button class="theme-toggle" onclick="toggleTheme()" title="Toggle Dark/Light Mode">
+                        <i class="fas fa-moon"></i>
+                    </button>
                     <div class="stat-item">
                         <i class="fas fa-star"></i>
                         <span id="stars">0</span>
@@ -38,9 +44,9 @@
         <main class="main-content">
             <div class="card">
                 <h2><i class="fas fa-seedling"></i> Your Cat Garden</h2>
-                <p>Watch your adorable cat roam around in this peaceful garden!</p>
+                <p>Watch your adorable cats roam around in this peaceful garden!</p>
                 <div id="garden">
-                    <img id="cat" src="cat.png" alt="Cute Cat">
+                    <!-- Cats will be spawned dynamically by JavaScript -->
                 </div>
             </div>
         </main>
@@ -62,7 +68,7 @@
         <a href="garden.html">Garden</a>
         <a href="shop.html">Shop</a>
         <a href="egg.html">Egg</a>
-        <a href="spreadsheet.html">Spreadsheet</a>
+        <a href="spreadsheet.html">Job Applications</a>
         <a href="gacha.html">Gatcha</a>
     </div>
 </body>

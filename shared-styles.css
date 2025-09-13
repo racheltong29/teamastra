@@ -3,7 +3,7 @@
    ======================================== */
 
 /* Import Retro Fonts */
-@import url('https://fonts.googleapis.com/css2?family=Fredoka+One:wght@400&family=Fredoka:wght@300;400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Fredoka+One:wght@400&family=Fredoka:wght@300;400;500;600;700&family=Orbitron:wght@400;500;600;700;800;900&family=Press+Start+2P&display=swap');
 
 /* CSS Variables for Consistent Theming */
 :root {
@@ -15,18 +15,28 @@
   --primary-purple: #9775fa;
   --primary-orange: #ff922b;
   
-  /* Pastel Backgrounds */
+  /* Light Mode Colors */
   --bg-cream: #fef6e4;
   --bg-mint: #d0f0c0;
   --bg-lavender: #e5dbff;
   --bg-peach: #ffe0e6;
   --bg-sky: #d0f0ff;
+  --bg-main: #ffffff;
+  --bg-card: rgba(255, 255, 255, 0.95);
   
   /* Text Colors */
   --text-dark: #2c3e50;
   --text-medium: #5f7161;
   --text-light: #868e96;
   --text-white: #ffffff;
+  
+  /* Dark Mode Colors */
+  --dark-bg-main: #1a1a1a;
+  --dark-bg-card: rgba(30, 30, 30, 0.95);
+  --dark-bg-cream: #2d2d2d;
+  --dark-text-dark: #ffffff;
+  --dark-text-medium: #cccccc;
+  --dark-text-light: #999999;
   
   /* Gradients */
   --gradient-sunset: linear-gradient(135deg, #ff6b9d, #ffd43b, #4dabf7);
@@ -54,7 +64,7 @@
 }
 
 body {
-  font-family: 'Fredoka', sans-serif;
+  font-family: 'Orbitron', monospace;
   background: var(--gradient-sunset);
   background-size: 400% 400%;
   animation: gradientFlow 15s ease infinite;
@@ -62,6 +72,36 @@ body {
   color: var(--text-dark);
   overflow-x: hidden;
   position: relative;
+  transition: all 0.3s ease;
+}
+
+/* Dark Mode Support */
+body.dark-mode {
+  background: linear-gradient(135deg, #1a1a1a, #2d2d2d, #1a1a1a);
+  color: var(--dark-text-dark);
+}
+
+body.dark-mode .header {
+  background: var(--dark-bg-card);
+  border-bottom-color: var(--primary-pink);
+}
+
+body.dark-mode .card {
+  background: var(--dark-bg-card);
+  border-color: rgba(255, 107, 157, 0.3);
+}
+
+body.dark-mode #sidebar {
+  background: var(--dark-bg-cream);
+  border-right-color: var(--primary-pink);
+}
+
+body.dark-mode #sidebar a {
+  color: var(--dark-text-medium);
+}
+
+body.dark-mode #sidebar a:hover {
+  color: var(--text-white);
 }
 
 /* Animated Background */
@@ -108,6 +148,7 @@ body::before {
   max-width: 1200px;
   margin: 0 auto;
   padding: 1rem 2rem;
+  padding-left: 120px; /* Add left padding to avoid hamburger menu */
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -125,14 +166,32 @@ body::before {
   animation: bounce 2s infinite;
 }
 
+.logo-icon {
+  width: 2.5rem;
+  height: 2.5rem;
+  animation: bounce 2s infinite;
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.2));
+}
+
 .logo h1 {
-  font-family: 'Fredoka One', cursive;
-  font-size: 2rem;
+  font-family: 'Press Start 2P', cursive;
+  font-size: 1.5rem;
   background: var(--gradient-candy);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
   text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+  letter-spacing: 2px;
+}
+
+.logo .subtitle {
+  font-family: 'Orbitron', monospace;
+  font-size: 0.7rem;
+  color: var(--text-medium);
+  margin-top: -5px;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 1px;
 }
 
 @keyframes bounce {
@@ -145,6 +204,29 @@ body::before {
 .user-stats {
   display: flex;
   gap: 1rem;
+  align-items: center;
+}
+
+/* Theme Toggle */
+.theme-toggle {
+  background: var(--gradient-candy);
+  border: none;
+  padding: 0.5rem;
+  border-radius: 50%;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: var(--shadow-soft);
+  margin-right: 1rem;
+}
+
+.theme-toggle:hover {
+  transform: scale(1.1);
+  box-shadow: var(--shadow-strong);
+}
+
+.theme-toggle i {
+  color: var(--text-white);
+  font-size: 1.2rem;
 }
 
 .stat-item {
@@ -179,6 +261,7 @@ body::before {
   max-width: 1200px;
   margin: 0 auto;
   padding: 2rem;
+  padding-left: 120px; /* Add left padding to avoid hamburger menu */
   display: grid;
   gap: 2rem;
 }
@@ -330,17 +413,38 @@ body::before {
 
 /* Typography */
 h1, h2, h3, h4, h5, h6 {
-  font-family: 'Fredoka One', cursive;
+  font-family: 'Press Start 2P', cursive;
   color: var(--text-dark);
   margin-bottom: 1rem;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
 }
 
-h1 { font-size: 2.5rem; }
-h2 { font-size: 2rem; }
-h3 { font-size: 1.5rem; }
-h4 { font-size: 1.3rem; }
-h5 { font-size: 1.1rem; }
-h6 { font-size: 1rem; }
+h1 { font-size: 2rem; }
+h2 { font-size: 1.5rem; }
+h3 { font-size: 1.2rem; }
+h4 { font-size: 1rem; }
+h5 { font-size: 0.9rem; }
+h6 { font-size: 0.8rem; }
+
+/* Page-specific headings */
+.page-title {
+  font-family: 'Press Start 2P', cursive;
+  font-size: 1.8rem;
+  background: var(--gradient-candy);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  margin-bottom: 0.5rem;
+}
+
+.page-subtitle {
+  font-family: 'Orbitron', monospace;
+  font-size: 0.9rem;
+  color: var(--text-medium);
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  margin-bottom: 2rem;
+}
 
 p {
   line-height: 1.6;
@@ -369,6 +473,7 @@ input:focus, select:focus, textarea:focus {
 @media (max-width: 768px) {
   .header-content {
     padding: 1rem;
+    padding-left: 80px; /* Reduce left padding on mobile */
     flex-direction: column;
     gap: 1rem;
   }
@@ -379,6 +484,7 @@ input:focus, select:focus, textarea:focus {
   
   .main-content {
     padding: 1rem;
+    padding-left: 80px; /* Reduce left padding on mobile */
   }
   
   .logo h1 {
@@ -392,6 +498,11 @@ input:focus, select:focus, textarea:focus {
   
   .card {
     padding: 1.5rem;
+  }
+  
+  #menu-icon {
+    top: 15px;
+    left: 15px;
   }
 }
 

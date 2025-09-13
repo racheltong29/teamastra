@@ -1,12 +1,4 @@
-const circles = document.querySelectorAll('.circle');
-const popup = document.getElementById('popup');
-
-circles.forEach(circle => {
-  circle.addEventListener('click', () => {
-    popup.textContent = circle.dataset.info;
-    popup.classList.remove('hidden');
-  });
-});
-
+// Job application functionality is now handled by job-manager.js
+// This file is kept for any additional egg-specific functionality
 
 // toggleSidebar function moved to shared-scripts.js

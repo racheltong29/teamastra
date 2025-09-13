@@ -45,6 +45,12 @@
 .container {
   text-align: center;
   padding: 2rem;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 400px;
 }
 
 #egg, #cat {
@@ -59,10 +65,14 @@
 }
 
 #wishBtn {
-  margin-top: 2rem;
+  position: absolute;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
   font-size: 1.3rem;
   padding: 1rem 2rem;
   animation: pulse 2s infinite;
+  z-index: 10;
 }
 
 @keyframes pulse {
