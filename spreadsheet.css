@@ -30,6 +30,8 @@
 /* Table */
 .table-container { 
   overflow-x: auto; 
+  margin: 2rem auto;
+  max-width: 1200px;
   border-radius: var(--radius-large);
   box-shadow: var(--shadow-medium);
 }
@@ -45,29 +47,46 @@ table {
 }
 
 th, td {
-  padding: 1rem;
+  padding: 0.6rem;
   text-align: center;
   border-bottom: 1px solid rgba(255, 107, 157, 0.1);
   font-family: 'Fredoka', sans-serif;
+  font-size: 0.85rem;
 }
 
 th { 
-  background: var(--gradient-candy); 
   color: var(--text-white);
   font-family: 'Fredoka One', cursive;
   font-weight: 600;
+  font-size: 0.9rem;
 }
 
-td select, td input {
-  padding: 0.5rem;
+th:nth-child(1) { background: #FF6B9D; } /* Job Role - Pink */
+th:nth-child(2) { background: #4ECDC4; } /* Company - Teal */
+th:nth-child(3) { background: #45B7D1; } /* Status - Blue */
+th:nth-child(4) { background: #96CEB4; } /* Salary - Green */
+th:nth-child(5) { background: #FFEAA7; color: #2D3436; } /* Location - Yellow */
+th:nth-child(6) { background: #DDA0DD; } /* Date Applied - Purple */
+th:nth-child(7) { background: #98D8C8; } /* Return Offer - Mint */
+th:nth-child(8) { background: #F7DC6F; color: #2D3436; } /* Connections - Light Yellow */
+th:nth-child(9) { background: #BB8FCE; } /* Priority - Lavender */
+th:nth-child(10) { background: #85C1E9; } /* Stars/XP - Light Blue */
+th:nth-child(11) { background: #F8C471; } /* Resume - Orange */
+th:nth-child(12) { background: #F1948A; } /* Actions - Coral */
+
+td select, td input, td textarea {
+  padding: 0.4rem;
   border: 2px solid rgba(255, 107, 157, 0.3);
   border-radius: var(--radius-medium);
   font-family: 'Fredoka', sans-serif;
   background: rgba(255, 255, 255, 0.9);
   transition: all 0.3s ease;
+  font-size: 0.8rem;
+  width: 100%;
+  box-sizing: border-box;
 }
 
-td select:focus, td input:focus {
+td select:focus, td input:focus, td textarea:focus {
   outline: none;
   border-color: var(--primary-pink);
   box-shadow: 0 0 0 3px rgba(255, 107, 157, 0.2);
@@ -82,18 +101,42 @@ td select:focus, td input:focus {
 
 /* Delete button */
 .delete-btn {
-  background: var(--gradient-sunshine);
+  background: #F1948A;
   color: var(--text-white);
   border: none;
-  padding: 0.5rem 1rem;
+  padding: 0.4rem 0.8rem;
   border-radius: var(--radius-medium);
   font-family: 'Fredoka', sans-serif;
   font-weight: 600;
   cursor: pointer;
   transition: all 0.3s ease;
+  font-size: 0.8rem;
+  float: right;
 }
 
 .delete-btn:hover {
+  background: #E74C3C;
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-soft);
+}
+
+/* Resume button */
+.resume-btn {
+  background: #F8C471;
+  color: var(--text-white);
+  border: none;
+  padding: 0.4rem 0.8rem;
+  border-radius: var(--radius-medium);
+  font-family: 'Fredoka', sans-serif;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-size: 0.8rem;
+  width: 100%;
+}
+
+.resume-btn:hover {
+  background: #F39C12;
   transform: translateY(-2px);
   box-shadow: var(--shadow-soft);
 }

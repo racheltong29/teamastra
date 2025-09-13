@@ -46,7 +46,7 @@
                 <h2><i class="fas fa-briefcase"></i> Job Application Circles</h2>
                 <p>Click on the circles to explore different job opportunities and get more information!</p>
                 
-                <div class="job-circles-container">
+                <div class="job-circles-container" onclick="handleEggClick(event)">
                     <div class="circle" data-job-id="job-1" data-info="Click to add a new job application">+</div>
                     <div class="circle large" data-job-id="job-2" data-info="Click to add a new job application">+</div>
                     <div id="popup" class="hidden"></div>
@@ -107,12 +107,39 @@
                             </div>
 
                             <div class="form-group">
+                                <label for="location">Location</label>
+                                <input type="text" id="location" placeholder="Enter job location" readonly>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="connections">Connections</label>
+                                <input type="text" id="connections" placeholder="Enter any connections at the company" readonly>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="dateApplied">Date Applied</label>
+                                <input type="date" id="dateApplied" readonly>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="emailsContacts">Emails/Contacts</label>
+                                <textarea id="emailsContacts" placeholder="Enter contact information..." readonly></textarea>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="returnOffer">
+                                    <input type="checkbox" id="returnOffer" disabled>
+                                    Return Offer?
+                                </label>
+                            </div>
+
+                            <div class="form-group">
                                 <label for="notes">Additional Notes</label>
                                 <textarea id="notes" placeholder="Add any additional notes..." readonly></textarea>
                             </div>
 
                             <div class="form-actions">
-                                <button class="btn btn-primary" onclick="saveJobApplication()" id="saveBtn" disabled>Save Application</button>
+                                <button class="btn btn-primary" onclick="saveJobApplication()" id="saveBtn" disabled>Save Job</button>
                                 <button class="btn btn-secondary" onclick="applyToJob()" id="applyBtn" disabled>Apply Now</button>
                                 <button class="btn btn-danger" onclick="deleteJobApplication()" id="deleteBtn" disabled>Delete</button>
                             </div>
@@ -124,6 +151,7 @@
     </div>
 
     <script src="shared-scripts.js"></script>
+    <script src="data-manager.js"></script>
     <script src="job-manager.js"></script>
     <script src="egg.js"></script>
 
