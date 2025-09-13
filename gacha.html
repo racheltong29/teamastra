@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Gacha Egg</title>
+
+    <link rel="stylesheet" href="gacha.css">
+</head>
+<body>
+    <div id="ticketCount" class="ticket-counter"></div>
+
+    <div class="container">
+        <img id="egg" src="egg.png" alt="Egg" />
+        <img id="cat" src="" alt="Cat" style="display: none;" />
+        <button id="wishBtn">Wish</button>
+    </div>
+
+    <div id="celebration" class="overlay" style="display: none;">
+        <div class="message-box">
+            <p id="resultText"></p>
+            <img id="resultImage" src="" alt="Result" />
+            <button id="okayBtn">Okay</button>
+        </div>
+    </div>
+
+
+
+    <script src="gacha.js"></script>
+
+    <!-- Hamburger Menu -->
+    <div id="menu-icon" onclick="toggleSidebar()">
+        <div class="bar"></div>
+        <div class="bar"></div>
+        <div class="bar"></div>
+    </div>
+
+    <!-- Sidebar Navigation -->
+    <div id="sidebar">
+        <a href="index.html">Stats</a>
+        <a href="garden.html">Garden</a>
+        <a href="shop.html">Shop</a>
+        <a href="egg.html">Egg</a>
+        <a href="spreadsheet.html">Spreadsheet</a>
+        <a href="gacha.html">Gacha</a>
+    </div>
+</body>
+</html>
